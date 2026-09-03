@@ -1,0 +1,11 @@
+{
+  "id": "private-wealth",
+  "displayName": "Private Wealth",
+  "vertical": [
+    "FINANCIAL_SERVICES"
+  ],
+  "purpose": [
+    "LOCATION"
+  ],
+  "pageSetType": "ENTITY"
+}
