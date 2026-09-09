@@ -1,5 +1,5 @@
 {
   "id": "private-wealth-locator",
   "displayName": "Locator",
-  "pageSetType": "LOCATOR"
+  "pageGroupType": "LOCATOR"
 }
