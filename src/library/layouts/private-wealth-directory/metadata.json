@@ -1,5 +1,5 @@
 {
   "id": "private-wealth-directory",
   "displayName": "Directory",
-  "pageGroupType": "DIRECTORY"
+  "pageSetType": "DIRECTORY"
 }
