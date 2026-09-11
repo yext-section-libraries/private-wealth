@@ -1,7 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
-import * as React from "react";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import type { PuckComponent } from "@puckeditor/core";
 import {
   Background,
@@ -12,13 +10,9 @@ import {
   getSurfaceColorStyle,
   getThemeColorCssValue,
   isDarkColor,
-  MaybeRTF,
   resolveComponentData,
-  toPuckFields,
   useDocument,
   type ComprehensiveCTAValue,
-  type RichText,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableRichText,
   type TranslatableString,
@@ -27,6 +21,7 @@ import {
   type YextFields,
   VisibilityWrapper,
 } from "@yext/visual-editor";
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
 import {
   AnalyticsScopeProvider,
   Address,
@@ -36,17 +31,16 @@ import {
   type DayOfWeekNames,
   type HoursType,
 } from "@yext/pages-components";
-
-type StyledTextStyleProps = {
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  createDefaultComprehensiveCTA,
+  createDefaultStyledTextValue,
+  getTextStyles,
+  headingTypographyCss,
+  renderResolvedRichText,
+  type SectionProps,
+  type StyledTextProps,
+  type StyledTextStyleProps,
+} from "../shared/sectionHelpers";
 
 type PhoneItemProps = {
   number: YextEntityField<string>;
@@ -65,10 +59,7 @@ type HoursStyles = {
 };
 
 type PrivateWealthLocationDetailsSectionProps = {
-  section: {
-    backgroundColor: ThemeColor;
-    visibleOnLivePage: boolean;
-  };
+  section: SectionProps;
   sectionHeading: StyledTextProps;
   informationCard: {
     title: YextEntityField<TranslatableString>;
@@ -109,116 +100,6 @@ type PrivateWealthLocationDetailsSectionProps = {
     contentStyles: StyledTextStyleProps;
   };
 };
-
-function createDefaultStyledTextValue(): StyledTextValue {
-  return {
-    fontFamily: "default",
-    fontSize: "default",
-    fontWeight: "default",
-    fontStyle: "default",
-    textTransform: "default",
-  };
-}
-
-function getTextStyles(
-  styles: StyledTextValue,
-  fontColor?: ThemeColor,
-): React.CSSProperties {
-  return {
-    color: getThemeColorCssValue(fontColor),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
-  };
-}
-
-function createDefaultComprehensiveCTA(
-  label: string,
-  link: string,
-  variant: "primary" | "secondary",
-): ComprehensiveCTAValue {
-  return {
-    data: {
-      actionType: "link",
-      cta: {
-        field: "",
-        constantValue: {
-          label,
-          link,
-          linkType: "URL",
-          ctaType: "textAndLink",
-          openInNewTab: false,
-          normalizeLink: false,
-        },
-        constantValueEnabled: true,
-        selectedType: "textAndLink",
-      },
-      openInNewTab: false,
-    },
-    styles: {
-      variant,
-      color: {
-        selectedColor: "palette-tertiary",
-        contrastingColor: "palette-tertiary-contrast",
-      },
-      button: {
-        ...createDefaultStyledTextValue(),
-        borderRadius: "lg",
-        letterSpacing: "default",
-      },
-      link: {
-        ...createDefaultStyledTextValue(),
-        includeCaret: "default",
-        letterSpacing: "default",
-      },
-    },
-  };
-}
-
-function renderResolvedRichText(
-  value: unknown,
-  richTextStyleOverrides: Omit<StyledTextValue, "color"> & { color: string },
-): React.ReactNode {
-  if (React.isValidElement(value)) {
-    return value;
-  }
-
-  const normalizedValue: RichText | string | undefined =
-    typeof value === "string"
-      ? value
-      : typeof value === "object" && value !== null && "html" in value
-        ? (value as RichText)
-        : undefined;
-
-  return (
-    <MaybeRTF
-      data={normalizedValue}
-      richTextStyleOverrides={richTextStyleOverrides}
-    />
-  );
-}
-
-function formatPhoneNumber(
-  phoneNumberString: string,
-  format: "domestic" | "international",
-): string {
-  const cleanedPhoneNumberString = phoneNumberString.replace(
-    /(?!^\+)\+|[^\d+]/g,
-    "",
-  );
-  const parsedPhoneNumber = parsePhoneNumber(cleanedPhoneNumberString);
-
-  if (!parsedPhoneNumber.valid || parsedPhoneNumber.number === undefined) {
-    return phoneNumberString;
-  }
-
-  return format === "international"
-    ? parsedPhoneNumber.number.international
-    : parsedPhoneNumber.number.national;
-}
 
 function normalizeResolvedStringList(value: unknown): string[] {
   return Array.isArray(value)
@@ -818,7 +699,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
     accessibilityText,
     locale,
     streamDocument,
-    { richTextStyleOverrides: accessibilityRichTextStyleOverrides },
   );
   const primaryCtaValue: Partial<ComprehensiveCTAValue> = {
     data: primaryCta.data,
@@ -833,13 +713,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{`
-h1, h1[class] { font-family: var(--fontFamily-h1-fontFamily); font-size: var(--fontSize-h1-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h1-fontWeight); font-style: var(--fontStyle-h1-fontStyle); text-transform: var(--textTransform-h1-textTransform); }
-h2, h2[class] { font-family: var(--fontFamily-h2-fontFamily); font-size: var(--fontSize-h2-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h2-fontWeight); font-style: var(--fontStyle-h2-fontStyle); text-transform: var(--textTransform-h2-textTransform); }
-h3, h3[class] { font-family: var(--fontFamily-h3-fontFamily); font-size: var(--fontSize-h3-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h3-fontWeight); font-style: var(--fontStyle-h3-fontStyle); text-transform: var(--textTransform-h3-textTransform); }
-h4, h4[class] { font-family: var(--fontFamily-h4-fontFamily); font-size: var(--fontSize-h4-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h4-fontWeight); font-style: var(--fontStyle-h4-fontStyle); text-transform: var(--textTransform-h4-textTransform); }
-h5, h5[class] { font-family: var(--fontFamily-h5-fontFamily); font-size: var(--fontSize-h5-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h5-fontWeight); font-style: var(--fontStyle-h5-fontStyle); text-transform: var(--textTransform-h5-textTransform); }
-h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--fontSize-h6-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h6-fontWeight); font-style: var(--fontStyle-h6-fontStyle); text-transform: var(--textTransform-h6-textTransform); }
+      <style>{`${headingTypographyCss}
 .yext-private-wealth-hours { width: 100%; min-width: 0; }
 .yext-private-wealth-hours .HoursTable { width: 100%; min-width: 0; max-width: 100%; }
 .yext-private-wealth-hours .HoursTable-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 0.75rem; width: 100%; min-width: 0; }
@@ -1222,7 +1096,7 @@ h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--f
 export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWealthLocationDetailsSectionProps> =
   {
     label: "Location Details Section",
-    fields: toPuckFields(privateWealthLocationDetailsFields),
+    fields: privateWealthLocationDetailsFields,
     defaultProps: {
       sectionHeading: {
         text: {
@@ -1307,13 +1181,11 @@ export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWea
         },
         primaryCta: createDefaultComprehensiveCTA(
           "Visit Website",
-          "#",
-          "primary",
+          { variant: "primary" },
         ),
         secondaryCta: createDefaultComprehensiveCTA(
           "Book Appointment",
-          "#",
-          "secondary",
+          { variant: "secondary" },
         ),
       },
       hoursCard: {

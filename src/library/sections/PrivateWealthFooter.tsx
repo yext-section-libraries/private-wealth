@@ -7,28 +7,23 @@ import {
   EntityField,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
   isDarkColor,
   resolveComponentData,
-  toPuckFields,
   useDocument,
   type ComprehensiveCTAValue,
-  type StreamDocument,
-  type StyledTextValue,
-  type ThemeColor,
-  type TranslatableString,
   type YextComponentConfig,
-  type YextEntityField,
   type YextFields,
   VisibilityWrapper,
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  baseTypographyCss,
+  createDefaultComprehensiveCTA,
+  createDefaultStyledTextValue,
+  getTextStyles,
+  type SectionProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type FooterLinkItem = {
   cta: ComprehensiveCTAValue;
@@ -37,84 +32,8 @@ type FooterLinkItem = {
 type PrivateWealthFooterProps = {
   brandLabel: StyledTextProps;
   links: FooterLinkItem[];
-  section: {
-    backgroundColor: ThemeColor;
-    visibleOnLivePage: boolean;
-  };
+  section: SectionProps;
 };
-
-function createDefaultStyledTextValue(): StyledTextValue {
-  return {
-    fontFamily: "default",
-    fontSize: "default",
-    fontWeight: "default",
-    fontStyle: "default",
-    textTransform: "default",
-  };
-}
-
-function getTextStyles(
-  styles: StyledTextValue,
-  fontColor: ThemeColor | undefined,
-  surfaceColor: ThemeColor,
-  streamDocument: StreamDocument,
-): React.CSSProperties {
-  return {
-    color:
-      getThemeColorCssValue(fontColor) ??
-      (isDarkColor(surfaceColor, streamDocument) ? "#fff" : "#000"),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
-  };
-}
-
-function createDefaultComprehensiveCTA(label: string): ComprehensiveCTAValue {
-  return {
-    data: {
-      actionType: "link",
-      cta: {
-        field: "",
-        constantValue: {
-          label,
-          link: "#",
-          linkType: "URL",
-          ctaType: "textAndLink",
-          openInNewTab: false,
-          normalizeLink: false,
-        },
-        constantValueEnabled: true,
-        selectedType: "textAndLink",
-      },
-      openInNewTab: false,
-    },
-    styles: {
-      variant: "link",
-      color: undefined,
-      button: {
-        fontFamily: "default",
-        fontSize: "default",
-        fontWeight: "default",
-        fontStyle: "default",
-        textTransform: "default",
-        borderRadius: "lg",
-        letterSpacing: "default",
-      },
-      link: {
-        fontFamily: "default",
-        fontSize: "default",
-        fontWeight: "default",
-        fontStyle: "default",
-        textTransform: "default",
-        includeCaret: "none",
-        letterSpacing: "default",
-      },
-    },
-  } satisfies ComprehensiveCTAValue;
-}
 
 const privateWealthFooterFields: YextFields<PrivateWealthFooterProps> = {
   section: {
@@ -162,7 +81,10 @@ const privateWealthFooterFields: YextFields<PrivateWealthFooterProps> = {
     label: "Links",
     type: "array",
     defaultItemProps: {
-      cta: createDefaultComprehensiveCTA("Link"),
+      cta: createDefaultComprehensiveCTA("Link", {
+        variant: "link",
+        includeCaret: "none",
+      }),
     },
     getItemSummary: (item) =>
       String(item.cta?.data?.cta?.constantValue?.label || "Link"),
@@ -209,17 +131,7 @@ const PrivateWealthFooterComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{`
-p { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-li { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-h1, h1[class] { font-family: var(--fontFamily-h1-fontFamily); font-size: var(--fontSize-h1-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h1-fontWeight); font-style: var(--fontStyle-h1-fontStyle); text-transform: var(--textTransform-h1-textTransform); }
-h2, h2[class] { font-family: var(--fontFamily-h2-fontFamily); font-size: var(--fontSize-h2-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h2-fontWeight); font-style: var(--fontStyle-h2-fontStyle); text-transform: var(--textTransform-h2-textTransform); }
-h3, h3[class] { font-family: var(--fontFamily-h3-fontFamily); font-size: var(--fontSize-h3-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h3-fontWeight); font-style: var(--fontStyle-h3-fontStyle); text-transform: var(--textTransform-h3-textTransform); }
-h4, h4[class] { font-family: var(--fontFamily-h4-fontFamily); font-size: var(--fontSize-h4-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h4-fontWeight); font-style: var(--fontStyle-h4-fontStyle); text-transform: var(--textTransform-h4-textTransform); }
-h5, h5[class] { font-family: var(--fontFamily-h5-fontFamily); font-size: var(--fontSize-h5-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h5-fontWeight); font-style: var(--fontStyle-h5-fontStyle); text-transform: var(--textTransform-h5-textTransform); }
-h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--fontSize-h6-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h6-fontWeight); font-style: var(--fontStyle-h6-fontStyle); text-transform: var(--textTransform-h6-textTransform); }
-
-      `}</style>
+      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <footer
@@ -282,7 +194,7 @@ h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--f
 export const PrivateWealthFooter: YextComponentConfig<PrivateWealthFooterProps> =
   {
     label: "Footer",
-    fields: toPuckFields(privateWealthFooterFields),
+    fields: privateWealthFooterFields,
     defaultProps: {
       brandLabel: {
         text: {
@@ -296,11 +208,36 @@ export const PrivateWealthFooter: YextComponentConfig<PrivateWealthFooterProps> 
         fontColor: undefined,
       },
       links: [
-        { cta: createDefaultComprehensiveCTA("Locations") },
-        { cta: createDefaultComprehensiveCTA("Services") },
-        { cta: createDefaultComprehensiveCTA("Advisors") },
-        { cta: createDefaultComprehensiveCTA("Disclosures") },
-        { cta: createDefaultComprehensiveCTA("Contact") },
+        {
+          cta: createDefaultComprehensiveCTA("Locations", {
+            variant: "link",
+            includeCaret: "none",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Services", {
+            variant: "link",
+            includeCaret: "none",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Advisors", {
+            variant: "link",
+            includeCaret: "none",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Disclosures", {
+            variant: "link",
+            includeCaret: "none",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Contact", {
+            variant: "link",
+            includeCaret: "none",
+          }),
+        },
       ],
       section: {
         visibleOnLivePage: true,

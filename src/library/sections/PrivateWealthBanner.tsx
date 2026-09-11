@@ -1,59 +1,34 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
-import { isValidElement } from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Body,
   EntityField,
-  MaybeRTF,
   PageSection,
-  type StyledTextValue,
-  type ThemeColor,
-  type TranslatableRichText,
   VisibilityWrapper,
   type YextComponentConfig,
-  type YextEntityField,
   type YextFields,
   backgroundColors,
   getDefaultRTF,
   resolveComponentData,
   resolveYextEntityField,
-  toPuckFields,
   useDocument,
 } from "@yext/visual-editor";
+import {
+  isRichTextEmpty,
+  renderResolvedRichText,
+  type SectionProps,
+  type StyledRtfProps,
+} from "../shared/sectionHelpers";
 
 type PrivateWealthBannerProps = {
-  data: {
-    text: YextEntityField<TranslatableRichText>;
-    styles: StyledTextValue;
-    fontColor?: ThemeColor;
-  };
+  data: StyledRtfProps;
   styles: {
     textAlignment: "left" | "center" | "right";
   };
-  section: {
-    backgroundColor: ThemeColor;
-    visibleOnLivePage: boolean;
-  };
-};
-
-const isRichTextEmpty = (value: unknown): boolean => {
-  if (!value) {
-    return true;
-  }
-
-  if (typeof value === "string") {
-    return value.trim() === "";
-  }
-
-  if (typeof value === "object" && "html" in value) {
-    const html = (value as { html?: unknown }).html;
-    return typeof html !== "string" || html.trim() === "";
-  }
-
-  return false;
+  section: SectionProps;
 };
 
 const PrivateWealthBannerFields: YextFields<PrivateWealthBannerProps> = {
@@ -165,7 +140,6 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
     data.text,
     i18n.language,
     streamDocument,
-    { richTextStyleOverrides },
   );
 
   if (!resolvedText) {
@@ -189,14 +163,7 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
         displayName="Banner Text"
         fieldId={data.text.field}
       >
-        {isValidElement(resolvedText) ? (
-          resolvedText
-        ) : typeof resolvedText === "string" ? (
-          <MaybeRTF
-            data={resolvedText}
-            richTextStyleOverrides={richTextStyleOverrides}
-          />
-        ) : null}
+        {renderResolvedRichText(resolvedText, richTextStyleOverrides)}
       </EntityField>
     </PageSection>
   );
@@ -207,7 +174,7 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
  */
 export const PrivateWealthBanner: YextComponentConfig<PrivateWealthBannerProps> = {
   label: "Banner",
-  fields: toPuckFields(PrivateWealthBannerFields),
+  fields: PrivateWealthBannerFields,
   defaultProps: {
     data: {
       text: {

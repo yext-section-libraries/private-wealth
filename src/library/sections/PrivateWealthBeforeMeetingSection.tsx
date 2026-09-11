@@ -1,60 +1,37 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
-import * as React from "react";
 import type { PuckComponent } from "@puckeditor/core";
 import {
   Background,
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
   getDefaultRTF,
   getSurfaceColorStyle,
   Image,
   isDarkColor,
-  MaybeRTF,
   resolveComponentData,
-  toPuckFields,
   useDocument,
   type ComprehensiveCTAValue,
-  type RichText,
-  type StreamDocument,
-  type StyledImageValue,
-  type StyledTextValue,
-  ThemeOptions,
-  type ThemeColor,
-  type TranslatableAssetImage,
-  type TranslatableRichText,
-  type TranslatableString,
   type YextComponentConfig,
-  type YextEntityField,
   type YextFields,
   VisibilityWrapper,
 } from "@yext/visual-editor";
+import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
-  AnalyticsScopeProvider,
-  type ComplexImageType,
-  type ImageType,
-} from "@yext/pages-components";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledImageProps = {
-  image: YextEntityField<ImageType | ComplexImageType | TranslatableAssetImage>;
-  aspectRatio: number;
-  imageConstrain: "fixed" | "filled";
-  styles?: StyledImageValue;
-};
+  aspectRatioOptions,
+  baseTypographyCss,
+  createDefaultComprehensiveCTA,
+  createDefaultStyledImageValue,
+  createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
+  getTextStyles,
+  renderResolvedRichText,
+  type SectionProps,
+  type StyledImageProps,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type LinkItem = {
   cta: ComprehensiveCTAValue;
@@ -65,122 +42,8 @@ type PrivateWealthBeforeMeetingSectionProps = {
   heading: StyledTextProps;
   image: StyledImageProps;
   links: LinkItem[];
-  section: {
-    backgroundColor: ThemeColor;
-    visibleOnLivePage: boolean;
-  };
+  section: SectionProps;
 };
-
-function getTextStyles(
-  styles: StyledTextValue,
-  fontColor: ThemeColor | undefined,
-  surfaceColor: ThemeColor,
-  streamDocument: StreamDocument,
-): React.CSSProperties {
-  return {
-    color:
-      getThemeColorCssValue(fontColor) ??
-      (isDarkColor(surfaceColor, streamDocument) ? "#fff" : "#000"),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
-  };
-}
-
-function getRichTextStyleOverrides(
-  styles: StyledTextValue,
-  fontColor: ThemeColor | undefined,
-  surfaceColor: ThemeColor,
-  streamDocument: StreamDocument,
-): Omit<StyledTextValue, "color"> & { color: string } {
-  return {
-    ...styles,
-    color:
-      getThemeColorCssValue(fontColor) ??
-      (isDarkColor(surfaceColor, streamDocument) ? "#fff" : "#000"),
-  };
-}
-
-function createDefaultStyledTextValue(): StyledTextValue {
-  return {
-    fontFamily: "default",
-    fontSize: "default",
-    fontWeight: "default",
-    fontStyle: "default",
-    textTransform: "default",
-  };
-}
-
-function createDefaultStyledImageValue(): StyledImageValue {
-  return {
-    borderRadius: "default",
-  };
-}
-
-function createDefaultComprehensiveCTA(
-  label: string,
-  link: string,
-): ComprehensiveCTAValue {
-  return {
-    data: {
-      actionType: "link",
-      cta: {
-        field: "",
-        constantValue: {
-          label,
-          link,
-          linkType: "URL",
-          ctaType: "textAndLink",
-          openInNewTab: false,
-          normalizeLink: false,
-        },
-        constantValueEnabled: true,
-        selectedType: "textAndLink",
-      },
-      openInNewTab: false,
-    },
-    styles: {
-      variant: "link",
-      color: undefined,
-      button: {
-        ...createDefaultStyledTextValue(),
-        borderRadius: "lg",
-        letterSpacing: "default",
-      },
-      link: {
-        ...createDefaultStyledTextValue(),
-        includeCaret: "default",
-        letterSpacing: "default",
-      },
-    },
-  };
-}
-
-function renderResolvedRichText(
-  value: unknown,
-  richTextStyleOverrides: Omit<StyledTextValue, "color"> & { color: string },
-): React.ReactNode {
-  if (React.isValidElement(value)) {
-    return value;
-  }
-
-  const normalizedValue: RichText | string | undefined =
-    typeof value === "string"
-      ? value
-      : typeof value === "object" && value !== null && "html" in value
-        ? (value as RichText)
-        : undefined;
-
-  return (
-    <MaybeRTF
-      data={normalizedValue}
-      richTextStyleOverrides={richTextStyleOverrides}
-    />
-  );
-}
 
 const privateWealthBeforeMeetingFields: YextFields<PrivateWealthBeforeMeetingSectionProps> =
   {
@@ -261,7 +124,7 @@ const privateWealthBeforeMeetingFields: YextFields<PrivateWealthBeforeMeetingSec
         aspectRatio: {
           label: "Aspect Ratio",
           type: "select",
-          options: ThemeOptions.ASPECT_RATIO,
+          options: aspectRatioOptions,
         },
         imageConstrain: {
           label: "Image Constrain",
@@ -281,7 +144,7 @@ const privateWealthBeforeMeetingFields: YextFields<PrivateWealthBeforeMeetingSec
       label: "Links",
       type: "array",
       defaultItemProps: {
-        cta: createDefaultComprehensiveCTA("Link", "#"),
+        cta: createDefaultComprehensiveCTA("Link", { variant: "link" }),
       },
       getItemSummary: (item) =>
         String(item.cta?.data?.cta?.constantValue?.label || "Link"),
@@ -325,7 +188,6 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
     body.text,
     locale,
     streamDocument,
-    { richTextStyleOverrides: bodyRichTextStyleOverrides },
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
@@ -371,17 +233,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{`
-p { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-li { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-h1, h1[class] { font-family: var(--fontFamily-h1-fontFamily); font-size: var(--fontSize-h1-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h1-fontWeight); font-style: var(--fontStyle-h1-fontStyle); text-transform: var(--textTransform-h1-textTransform); }
-h2, h2[class] { font-family: var(--fontFamily-h2-fontFamily); font-size: var(--fontSize-h2-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h2-fontWeight); font-style: var(--fontStyle-h2-fontStyle); text-transform: var(--textTransform-h2-textTransform); }
-h3, h3[class] { font-family: var(--fontFamily-h3-fontFamily); font-size: var(--fontSize-h3-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h3-fontWeight); font-style: var(--fontStyle-h3-fontStyle); text-transform: var(--textTransform-h3-textTransform); }
-h4, h4[class] { font-family: var(--fontFamily-h4-fontFamily); font-size: var(--fontSize-h4-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h4-fontWeight); font-style: var(--fontStyle-h4-fontStyle); text-transform: var(--textTransform-h4-textTransform); }
-h5, h5[class] { font-family: var(--fontFamily-h5-fontFamily); font-size: var(--fontSize-h5-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h5-fontWeight); font-style: var(--fontStyle-h5-fontStyle); text-transform: var(--textTransform-h5-textTransform); }
-h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--fontSize-h6-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h6-fontWeight); font-style: var(--fontStyle-h6-fontStyle); text-transform: var(--textTransform-h6-textTransform); }
-
-      `}</style>
+      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
@@ -477,7 +329,7 @@ h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--f
 export const PrivateWealthBeforeMeetingSection: YextComponentConfig<PrivateWealthBeforeMeetingSectionProps> =
   {
     label: "Before Meeting Section",
-    fields: toPuckFields(privateWealthBeforeMeetingFields),
+    fields: privateWealthBeforeMeetingFields,
     defaultProps: {
       heading: {
         text: {
@@ -518,10 +370,26 @@ export const PrivateWealthBeforeMeetingSection: YextComponentConfig<PrivateWealt
         styles: createDefaultStyledImageValue(),
       },
       links: [
-        { cta: createDefaultComprehensiveCTA("Advisory disclosures", "#") },
-        { cta: createDefaultComprehensiveCTA("Regulatory information", "#") },
-        { cta: createDefaultComprehensiveCTA("Privacy policy", "#") },
-        { cta: createDefaultComprehensiveCTA("FINRA BrokerCheck", "#") },
+        {
+          cta: createDefaultComprehensiveCTA("Advisory disclosures", {
+            variant: "link",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Regulatory information", {
+            variant: "link",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("Privacy policy", {
+            variant: "link",
+          }),
+        },
+        {
+          cta: createDefaultComprehensiveCTA("FINRA BrokerCheck", {
+            variant: "link",
+          }),
+        },
       ],
       section: {
         visibleOnLivePage: true,
