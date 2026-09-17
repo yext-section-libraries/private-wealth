@@ -2,6 +2,7 @@ import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -44,100 +45,100 @@ type PrivateWealthResourcesSectionProps = {
 const privateWealthResourcesFields: YextFields<PrivateWealthResourcesSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible On Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     body: {
-      label: "Body",
+      label: msg("fields.body", "Body"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.rich_text_v2"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     image: {
-      label: "Image",
+      label: msg("fields.image", "Image"),
       type: "object",
       objectFields: {
         image: {
           type: "entityField",
-          label: "Image",
+          label: msg("fields.image", "Image"),
           filter: {
             types: ["type.image"],
           },
         },
         aspectRatio: {
-          label: "Aspect Ratio",
+          label: msg("fields.aspectRatio", "Aspect Ratio"),
           type: "select",
           options: aspectRatioOptions,
         },
         imageConstrain: {
-          label: "Image Constrain",
+          label: msg("fields.imageConstrain", "Image Constrain"),
           type: "select",
           options: [
-            { label: "Fixed", value: "fixed" },
-            { label: "Filled", value: "filled" },
+            { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+            { label: msg("fields.options.filled", "Filled"), value: "filled" },
           ],
         },
         styles: {
-          label: "Image Styles",
+          label: msg("fields.imageStyles", "Image Styles"),
           type: "styledImage",
         },
       },
     },
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA",
     },
   };
@@ -301,7 +302,7 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
 
 export const PrivateWealthResourcesSection: YextComponentConfig<PrivateWealthResourcesSectionProps> =
   {
-    label: "Resources Section",
+    label: msg("components.resourcesSection", "Resources Section"),
     fields: privateWealthResourcesFields,
     defaultProps: {
       heading: {
@@ -351,9 +352,7 @@ export const PrivateWealthResourcesSection: YextComponentConfig<PrivateWealthRes
         },
       },
     },
-    render: (props) => (
-      <PrivateWealthResourcesSectionComponent {...props} />
-    ),
+    render: (props) => <PrivateWealthResourcesSectionComponent {...props} />,
   };
 
 export const config: SectionConfig = {

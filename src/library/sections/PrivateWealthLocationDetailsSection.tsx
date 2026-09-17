@@ -1,7 +1,10 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import * as React from "react";
 import type { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -110,99 +113,99 @@ function normalizeResolvedStringList(value: unknown): string[] {
 const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetailsSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible On Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     sectionHeading: {
-      label: "Section Heading",
+      label: msg("fields.sectionHeading", "Section Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     informationCard: {
-      label: "Information Card",
+      label: msg("fields.informationCard", "Information Card"),
       type: "object",
       objectFields: {
         title: {
           type: "entityField",
-          label: "Title",
+          label: msg("fields.title", "Title"),
           filter: {
             types: ["type.string"],
           },
         },
         addressSubheading: {
           type: "entityField",
-          label: "Address Subheading",
+          label: msg("fields.addressSubheading", "Address Subheading"),
           filter: {
             types: ["type.string"],
           },
         },
         address: {
-          label: "Address",
+          label: msg("fields.address", "Address"),
           type: "object",
           objectFields: {
             address: {
               type: "entityField",
-              label: "Address",
+              label: msg("fields.address", "Address"),
               filter: {
                 types: ["type.address"],
               },
             },
             showRegion: {
-              label: "Show Region",
+              label: msg("fields.showRegion", "Show Region"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
             showCountry: {
-              label: "Show Country",
+              label: msg("fields.showCountry", "Show Country"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
         },
         phones: {
-          label: "Phones",
+          label: msg("fields.phones", "Phones"),
           type: "object",
           objectFields: {
             items: {
-              label: "Items",
+              label: msg("fields.items", "Items"),
               type: "array",
               defaultItemProps: {
                 number: {
@@ -220,49 +223,55 @@ const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetail
               arrayFields: {
                 number: {
                   type: "entityField",
-                  label: "Number",
+                  label: msg("fields.number", "Number"),
                   filter: {
                     types: ["type.phone"],
                   },
                 },
                 label: {
-                  label: "Label",
+                  label: msg("fields.label", "Label"),
                   type: "text",
                 },
               },
             },
             phoneFormat: {
-              label: "Phone Format",
+              label: msg("fields.phoneFormat", "Phone Format"),
               type: "radio",
               options: [
-                { label: "Domestic", value: "domestic" },
-                { label: "International", value: "international" },
+                {
+                  label: msg("fields.options.domestic", "Domestic"),
+                  value: "domestic",
+                },
+                {
+                  label: msg("fields.options.international", "International"),
+                  value: "international",
+                },
               ],
             },
             includeHyperlink: {
-              label: "Include Hyperlink",
+              label: msg("fields.includeHyperlink", "Include Hyperlink"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
         },
         emails: {
-          label: "Emails",
+          label: msg("fields.emails", "Emails"),
           type: "object",
           objectFields: {
             subheading: {
               type: "entityField",
-              label: "Subheading",
+              label: msg("fields.subheading", "Subheading"),
               filter: {
                 types: ["type.string"],
               },
             },
             list: {
               type: "entityField",
-              label: "Emails",
+              label: msg("fields.emails", "Emails"),
               filter: {
                 types: ["type.string"],
                 includeListsOnly: true,
@@ -274,71 +283,92 @@ const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetail
         },
         nmlsSubheading: {
           type: "entityField",
-          label: "NMLS Subheading",
+          label: msg("fields.nmlsSubheading", "NMLS Subheading"),
           filter: {
             types: ["type.string"],
           },
         },
         nmlsValue: {
           type: "entityField",
-          label: "NMLS Value",
+          label: msg("fields.nmlsValue", "NMLS Value"),
           filter: {
             types: ["type.string"],
           },
         },
         primaryCta: {
-          label: "Primary CTA",
+          label: msg("fields.primaryCta", "Primary CTA"),
           type: "comprehensiveCTA",
         },
         secondaryCta: {
-          label: "Secondary CTA",
+          label: msg("fields.secondaryCta", "Secondary CTA"),
           type: "comprehensiveCTA",
         },
       },
     },
     hoursCard: {
-      label: "Hours Card",
+      label: msg("fields.hoursCard", "Hours Card"),
       type: "object",
       objectFields: {
         title: {
           type: "entityField",
-          label: "Title",
+          label: msg("fields.title", "Title"),
           filter: {
             types: ["type.string"],
           },
         },
         hours: {
           type: "entityField",
-          label: "Hours",
+          label: msg("fields.hours", "Hours"),
           filter: {
             types: ["type.hours"],
           },
           disableConstantValueToggle: true,
         },
         hoursStyles: {
-          label: "Hours Styles",
+          label: msg("fields.hoursStyles", "Hours Styles"),
           type: "object",
           objectFields: {
             startOfWeek: {
-              label: "Start Of Week",
+              label: msg("fields.startOfWeek", "Start Of Week"),
               type: "select",
               options: [
-                { label: "Monday", value: "monday" },
-                { label: "Tuesday", value: "tuesday" },
-                { label: "Wednesday", value: "wednesday" },
-                { label: "Thursday", value: "thursday" },
-                { label: "Friday", value: "friday" },
-                { label: "Saturday", value: "saturday" },
-                { label: "Sunday", value: "sunday" },
-                { label: "Today", value: "today" },
+                {
+                  label: msg("fields.options.monday", "Monday"),
+                  value: "monday",
+                },
+                {
+                  label: msg("fields.options.tuesday", "Tuesday"),
+                  value: "tuesday",
+                },
+                {
+                  label: msg("fields.options.wednesday", "Wednesday"),
+                  value: "wednesday",
+                },
+                {
+                  label: msg("fields.options.thursday", "Thursday"),
+                  value: "thursday",
+                },
+                {
+                  label: msg("fields.options.friday", "Friday"),
+                  value: "friday",
+                },
+                {
+                  label: msg("fields.options.saturday", "Saturday"),
+                  value: "saturday",
+                },
+                {
+                  label: msg("fields.options.sunday", "Sunday"),
+                  value: "sunday",
+                },
+                { label: msg("fields.options.today", "Today"), value: "today" },
               ],
             },
             collapseDays: {
-              label: "Collapse Days",
+              label: msg("fields.collapseDays", "Collapse Days"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
@@ -346,26 +376,26 @@ const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetail
       },
     },
     servicesCard: {
-      label: "Services Card",
+      label: msg("fields.servicesCard", "Services Card"),
       type: "object",
       objectFields: {
         title: {
           type: "entityField",
-          label: "Title",
+          label: msg("fields.title", "Title"),
           filter: {
             types: ["type.string"],
           },
         },
         languagesSubheading: {
           type: "entityField",
-          label: "Languages Subheading",
+          label: msg("fields.languagesSubheading", "Languages Subheading"),
           filter: {
             types: ["type.string"],
           },
         },
         languagesText: {
           type: "entityField",
-          label: "Languages Text",
+          label: msg("fields.languagesText", "Languages Text"),
           filter: {
             types: ["type.string"],
             includeListsOnly: true,
@@ -373,28 +403,31 @@ const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetail
         },
         accessibilitySubheading: {
           type: "entityField",
-          label: "Accessibility Subheading",
+          label: msg(
+            "fields.accessibilitySubheading",
+            "Accessibility Subheading",
+          ),
           filter: {
             types: ["type.string"],
           },
         },
         accessibilityText: {
           type: "entityField",
-          label: "Accessibility Text",
+          label: msg("fields.accessibilityText", "Accessibility Text"),
           filter: {
             types: ["type.rich_text_v2"],
           },
         },
         servicesSubheading: {
           type: "entityField",
-          label: "Services Subheading",
+          label: msg("fields.servicesSubheading", "Services Subheading"),
           filter: {
             types: ["type.string"],
           },
         },
         servicesItems: {
           type: "entityField",
-          label: "Services Items",
+          label: msg("fields.servicesItems", "Services Items"),
           filter: {
             types: ["type.string"],
             includeListsOnly: true,
@@ -403,54 +436,54 @@ const privateWealthLocationDetailsFields: YextFields<PrivateWealthLocationDetail
       },
     },
     cards: {
-      label: "Cards",
+      label: msg("fields.cards", "Cards"),
       type: "object",
       objectFields: {
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
         titleStyles: {
-          label: "Title Styles",
+          label: msg("fields.titleStyles", "Title Styles"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         subheadingStyles: {
-          label: "Subheading Styles",
+          label: msg("fields.subheadingStyles", "Subheading Styles"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         contentStyles: {
-          label: "Body Styles",
+          label: msg("fields.bodyStyles", "Body Styles"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
@@ -480,8 +513,27 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
   sectionHeading,
   servicesCard,
 }) => {
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument();
   const locale = streamDocument.locale ?? "en";
+  const dayOfWeekNames = React.useMemo<DayOfWeekNames>(() => {
+    const formatter = new Intl.DateTimeFormat(i18n.language, {
+      timeZone: "UTC",
+      weekday: "long",
+    });
+    const formatWeekday = (day: number) =>
+      formatter.format(new Date(Date.UTC(2024, 0, day)));
+
+    return {
+      sunday: formatWeekday(7),
+      monday: formatWeekday(8),
+      tuesday: formatWeekday(9),
+      wednesday: formatWeekday(10),
+      thursday: formatWeekday(11),
+      friday: formatWeekday(12),
+      saturday: formatWeekday(13),
+    };
+  }, [i18n.language]);
   const {
     address,
     addressSubheading,
@@ -968,8 +1020,15 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         <HoursTable
                           hours={resolvedHours}
                           comingSoon={streamDocument.comingSoon}
+                          dayOfWeekNames={dayOfWeekNames}
                           startOfWeek={hoursStyles.startOfWeek}
                           collapseDays={hoursStyles.collapseDays}
+                          intervalTranslations={{
+                            isClosed: t("closed", "Closed"),
+                            open24Hours: t("open24Hours", "Open 24 Hours"),
+                            reopenDate: t("reopenDate", "Reopen Date"),
+                            timeFormatLocale: i18n.language,
+                          }}
                         />
                       </div>
                     </EntityField>
@@ -1095,7 +1154,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
 
 export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWealthLocationDetailsSectionProps> =
   {
-    label: "Location Details Section",
+    label: msg("components.locationDetailsSection", "Location Details Section"),
     fields: privateWealthLocationDetailsFields,
     defaultProps: {
       sectionHeading: {
@@ -1179,14 +1238,12 @@ export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWea
           constantValue: { defaultValue: "1987654" },
           constantValueEnabled: true,
         },
-        primaryCta: createDefaultComprehensiveCTA(
-          "Visit Website",
-          { variant: "primary" },
-        ),
-        secondaryCta: createDefaultComprehensiveCTA(
-          "Book Appointment",
-          { variant: "secondary" },
-        ),
+        primaryCta: createDefaultComprehensiveCTA("Visit Website", {
+          variant: "primary",
+        }),
+        secondaryCta: createDefaultComprehensiveCTA("Book Appointment", {
+          variant: "secondary",
+        }),
       },
       hoursCard: {
         title: {

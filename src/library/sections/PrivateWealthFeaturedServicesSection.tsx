@@ -3,6 +3,7 @@ import type { SectionConfig } from "@yext/visual-editor";
 import * as React from "react";
 import type { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   createItemSource,
@@ -63,25 +64,25 @@ type PrivateWealthFeaturedServicesSectionProps = {
 };
 
 const featuredServicesSource = createItemSource<ServiceCardFields>({
-  label: "Service Cards",
+  label: msg("fields.serviceCards", "Service Cards"),
   mappingFields: {
     title: {
       type: "entityField",
-      label: "Title",
+      label: msg("fields.title", "Title"),
       filter: { types: ["type.string"] },
     },
     description: {
       type: "entityField",
-      label: "Description",
+      label: msg("fields.description", "Description"),
       filter: { types: ["type.rich_text_v2"] },
     },
     image: {
       type: "entityField",
-      label: "Image",
+      label: msg("fields.image", "Image"),
       filter: { types: ["type.image"] },
     },
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA",
     },
   },
@@ -110,10 +111,9 @@ const featuredServicesSource = createItemSource<ServiceCardFields>({
         },
         constantValueEnabled: true,
       },
-      cta: createDefaultComprehensiveCTA(
-        "Schedule a Wealth Review",
-        { variant: "link" },
-      ),
+      cta: createDefaultComprehensiveCTA("Schedule a Wealth Review", {
+        variant: "link",
+      }),
     },
     {
       title: {
@@ -139,10 +139,9 @@ const featuredServicesSource = createItemSource<ServiceCardFields>({
         },
         constantValueEnabled: true,
       },
-      cta: createDefaultComprehensiveCTA(
-        "Book a Retirement Consultation",
-        { variant: "link" },
-      ),
+      cta: createDefaultComprehensiveCTA("Book a Retirement Consultation", {
+        variant: "link",
+      }),
     },
     {
       title: {
@@ -168,10 +167,9 @@ const featuredServicesSource = createItemSource<ServiceCardFields>({
         },
         constantValueEnabled: true,
       },
-      cta: createDefaultComprehensiveCTA(
-        "Request an Investment Review",
-        { variant: "link" },
-      ),
+      cta: createDefaultComprehensiveCTA("Request an Investment Review", {
+        variant: "link",
+      }),
     },
     {
       title: {
@@ -207,41 +205,41 @@ const featuredServicesSource = createItemSource<ServiceCardFields>({
 const privateWealthFeaturedServicesFields: YextFields<PrivateWealthFeaturedServicesSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
@@ -249,58 +247,61 @@ const privateWealthFeaturedServicesFields: YextFields<PrivateWealthFeaturedServi
     },
     cards: featuredServicesSource.field,
     cardStyles: {
-      label: "Card Styles",
+      label: msg("fields.cardStyles", "Card Styles"),
       type: "object",
       objectFields: {
         title: {
-          label: "Title Styles",
+          label: msg("fields.titleStyles", "Title Styles"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         description: {
-          label: "Description Styles",
+          label: msg("fields.descriptionStyles", "Description Styles"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         image: {
-          label: "Image Styles",
+          label: msg("fields.imageStyles", "Image Styles"),
           type: "object",
           objectFields: {
             aspectRatio: {
-              label: "Aspect Ratio",
+              label: msg("fields.aspectRatio", "Aspect Ratio"),
               type: "select",
               options: aspectRatioOptions,
             },
             imageConstrain: {
-              label: "Image Constrain",
+              label: msg("fields.imageConstrain", "Image Constrain"),
               type: "select",
               options: [
-                { label: "Fixed", value: "fixed" },
-                { label: "Filled", value: "filled" },
+                { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+                {
+                  label: msg("fields.options.filled", "Filled"),
+                  value: "filled",
+                },
               ],
             },
             styles: {
-              label: "Image Styles",
+              label: msg("fields.imageStyles", "Image Styles"),
               type: "styledImage",
             },
           },
@@ -308,7 +309,7 @@ const privateWealthFeaturedServicesFields: YextFields<PrivateWealthFeaturedServi
       },
     },
     sectionCta: {
-      label: "Section CTA",
+      label: msg("fields.sectionCta", "Section CTA"),
       type: "comprehensiveCTA",
     },
   };
@@ -513,7 +514,10 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
 
 export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWealthFeaturedServicesSectionProps> =
   {
-    label: "Featured Services Section",
+    label: msg(
+      "components.featuredServicesSection",
+      "Featured Services Section",
+    ),
     fields: privateWealthFeaturedServicesFields,
     defaultProps: {
       heading: {
@@ -543,16 +547,13 @@ export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWe
         },
       },
       cards: featuredServicesSource.defaultValue,
-      sectionCta: createDefaultComprehensiveCTA(
-        "Explore Services",
-        {
-          variant: "primary",
-          color: {
-            selectedColor: "palette-tertiary",
-            contrastingColor: "palette-tertiary-contrast",
-          },
+      sectionCta: createDefaultComprehensiveCTA("Explore Services", {
+        variant: "primary",
+        color: {
+          selectedColor: "palette-tertiary",
+          contrastingColor: "palette-tertiary-contrast",
         },
-      ),
+      }),
       section: {
         visibleOnLivePage: true,
         backgroundColor: {
