@@ -21,7 +21,6 @@ import { PhoneAtom } from "@yext/visual-editor/section-library-support";
 import { useTemplateProps } from "@yext/visual-editor/section-library-support";
 import { resolveComponentData } from "@yext/visual-editor/section-library-support";
 import { HoursStatusAtom } from "@yext/visual-editor/section-library-support";
-import { HoursTableAtom } from "@yext/visual-editor/section-library-support";
 import { type BasicSelectorField } from "@yext/visual-editor/section-library-support";
 import type {
   YextCustomFieldRenderProps,
@@ -38,7 +37,9 @@ import { TranslatableAssetImage } from "@yext/visual-editor/section-library-supp
 import {
   Address,
   AddressType,
+  DayOfWeekNames,
   getDirections,
+  HoursTable as HoursTableComponent,
   HoursType,
   ListingType,
 } from "@yext/pages-components";
@@ -261,10 +262,7 @@ export interface LocatorResultCardProps {
 }
 
 export type DistanceDisplayOption =
-  | "distanceFromUser"
-  | "distanceFromSearch"
-  | "bothDistances"
-  | "hidden";
+  "distanceFromUser" | "distanceFromSearch" | "bothDistances" | "hidden";
 
 export const DEFAULT_LOCATOR_RESULT_CARD_PROPS: LocatorResultCardProps = {
   entityType: DEFAULT_ENTITY_TYPE,
@@ -351,7 +349,7 @@ const LOCATOR_IMAGE_CONSTANT_CONFIG: ImageField = {
 };
 
 const getDisplayFieldOptions = (
-  fieldTypeId: string | string[]
+  fieldTypeId: string | string[],
 ): EmbeddedStringOption[] => {
   // TODO: This breaks the rule of hooks, refactor the custom render path
   const templateMetadata = useTemplateMetadata();
@@ -372,7 +370,7 @@ const getDisplayFieldOptions = (
 };
 
 const DisplayFieldSelector = (
-  fieldTypeId: string | string[]
+  fieldTypeId: string | string[],
 ): BasicSelectorField => ({
   type: "basicSelector",
   label: msg("fields.field", "Field"),
@@ -608,7 +606,7 @@ export const LocatorResultCardFields: YextObjectField<LocatorResultCardProps> =
           showGetDirectionsLink: {
             label: msg(
               "fields.showGetDirectionsLink",
-              "Show Get Directions Link"
+              "Show Get Directions Link",
             ),
             type: "radio",
             options: [
@@ -648,7 +646,7 @@ export const LocatorResultCardFields: YextObjectField<LocatorResultCardProps> =
           includePhoneHyperlink: {
             label: msg(
               "fields.includePhoneHyperlink",
-              "Include Phone Hyperlink"
+              "Include Phone Hyperlink",
             ),
             type: "radio",
             options: [
@@ -867,7 +865,7 @@ export const LocatorResultCard = React.memo(
       typeof result.distanceFromFilter === "number"
         ? `${formatDistance(
             fromMeters(result.distanceFromFilter, unit),
-            i18n.language
+            i18n.language,
           )} ${unitLabel}`
         : undefined;
     const userDistance =
@@ -926,15 +924,15 @@ export const LocatorResultCard = React.memo(
 
     const handleGetDirectionsClick = useCardAnalyticsCallback(
       result,
-      "DRIVING_DIRECTIONS"
+      "DRIVING_DIRECTIONS",
     );
     const handleSecondaryCTAClick = useCardAnalyticsCallback(
       result,
-      "CTA_CLICK"
+      "CTA_CLICK",
     );
     const handlePhoneNumberClick = useCardAnalyticsCallback(
       result,
-      "TAP_TO_CALL"
+      "TAP_TO_CALL",
     );
 
     const getDirectionsLink: string | undefined = (() => {
@@ -944,14 +942,14 @@ export const LocatorResultCard = React.memo(
         listings,
         undefined,
         { provider: "google" },
-        undefined
+        undefined,
       );
       const coordinateLink = getDirections(
         undefined,
         undefined,
         undefined,
         { provider: "google" },
-        location.yextDisplayCoordinate
+        location.yextDisplayCoordinate,
       );
 
       return listingsLink || coordinateLink;
@@ -1039,7 +1037,7 @@ export const LocatorResultCard = React.memo(
                               })}
                               className={themeManagerCn(
                                 "components h-fit items-center w-fit underline gap-2 decoration-0 hover:no-underline font-link-fontFamily text-link-fontSize tracking-link-letterSpacing flex font-bold",
-                                getTextColorClass(resolvedAccentLinkColor)
+                                getTextColorClass(resolvedAccentLinkColor),
                               )}
                               style={getTextColorStyle(resolvedAccentLinkColor)}
                             >
@@ -1099,13 +1097,13 @@ export const LocatorResultCard = React.memo(
                 link={resolveComponentData(
                   props.secondaryCTA.link,
                   i18n.language,
-                  location
+                  location,
                 )}
                 label={
                   resolveComponentData(
                     props.secondaryCTA.label,
                     i18n.language,
-                    location
+                    location,
                   ) || t("callToAction", "Call to Action")
                 }
                 variant={props.secondaryCTA.variant}
@@ -1118,7 +1116,7 @@ export const LocatorResultCard = React.memo(
         </div>
       </Background>
     );
-  }
+  },
 );
 
 const PrimaryCTA = (props: {
@@ -1144,13 +1142,13 @@ const PrimaryCTA = (props: {
   let resolvedUrl = resolveLocatorResultUrl(
     location,
     streamDocument,
-    relativePrefixToRoot
+    relativePrefixToRoot,
   );
   if (resolvedUrl === undefined && primaryCTA?.link) {
     resolvedUrl = resolveComponentData(
       primaryCTA.link,
       i18n.language,
-      location
+      location,
     );
   }
 
@@ -1158,7 +1156,7 @@ const PrimaryCTA = (props: {
 
   const handlePrimaryCtaClick = useCardAnalyticsCallback(
     result,
-    "VIEW_WEBSITE"
+    "VIEW_WEBSITE",
   );
 
   return (
@@ -1169,7 +1167,7 @@ const PrimaryCTA = (props: {
           resolveComponentData(
             props.primaryCTA.label,
             i18n.language,
-            location
+            location,
           ) || t("visitPage", "Visit Page")
         }
         ariaLabel={t("visitPageForName", {
@@ -1192,10 +1190,10 @@ const CardIcon: React.FC<{
   return (
     <div
       className={`h-10 w-10 flex justify-center rounded-full items-center ${getBackgroundColorClasses(
-        backgroundColor ?? backgroundColors.background2.value
+        backgroundColor ?? backgroundColors.background2.value,
       )}`}
       style={getBackgroundColorStyle(
-        backgroundColor ?? backgroundColors.background2.value
+        backgroundColor ?? backgroundColors.background2.value,
       )}
     >
       {children}
@@ -1309,9 +1307,28 @@ const HoursSection = (props: {
   accentColor?: ThemeColor;
 }) => {
   const { location, result, hoursProps, showIcons, accentColor } = props;
+  const { t, i18n } = useTranslation();
   const [isExpanded, setIsExpanded] = React.useState(false);
   const triggerId = React.useId();
   const contentId = React.useId();
+  const dayOfWeekNames = React.useMemo<DayOfWeekNames>(() => {
+    const formatter = new Intl.DateTimeFormat(i18n.language, {
+      timeZone: "UTC",
+      weekday: "long",
+    });
+    const formatWeekday = (day: number) =>
+      formatter.format(new Date(Date.UTC(2024, 0, day)));
+
+    return {
+      sunday: formatWeekday(7),
+      monday: formatWeekday(8),
+      tuesday: formatWeekday(9),
+      wednesday: formatWeekday(10),
+      thursday: formatWeekday(11),
+      friday: formatWeekday(12),
+      saturday: formatWeekday(13),
+    };
+  }, [i18n.language]);
 
   const hoursData = parseHoursFromLocation(location, hoursProps.field);
   const comingSoon = location["comingSoon"];
@@ -1362,11 +1379,18 @@ const HoursSection = (props: {
                 role="region"
               >
                 <div className="flex flex-col gap-2">
-                  <HoursTableAtom
+                  <HoursTableComponent
                     hours={hoursData ?? {}}
                     comingSoon={comingSoon}
                     startOfWeek={hoursProps.table.startOfWeek}
                     collapseDays={hoursProps.table.collapseDays}
+                    dayOfWeekNames={dayOfWeekNames}
+                    intervalTranslations={{
+                      isClosed: t("closed", "Closed"),
+                      open24Hours: t("open24Hours", "Open 24 Hours"),
+                      reopenDate: t("reopenDate", "Reopen Date"),
+                      timeFormatLocale: i18n.language,
+                    }}
                     className="[&_.HoursTable-row]:w-fit"
                   />
                   {location.additionalHoursText &&
@@ -1535,7 +1559,7 @@ const resolveText = (params: {
 /** Parses a string from the given location using the provided field ID. */
 const parseStringFromLocation = (
   location: Location,
-  fieldId: string | undefined
+  fieldId: string | undefined,
 ): string | undefined => {
   const value = resolveProjectedField(location, fieldId);
   if (value === undefined || value === null) {
@@ -1547,7 +1571,7 @@ const parseStringFromLocation = (
 /** Parses an array from the given location using the provided field ID. */
 const parseArrayFromLocation = (
   location: Location,
-  fieldId: string | undefined
+  fieldId: string | undefined,
 ): Array<any> | undefined => {
   const fieldValue = resolveProjectedField(location, fieldId);
   if (Array.isArray(fieldValue)) {
@@ -1559,7 +1583,7 @@ const parseArrayFromLocation = (
 /** Parses a record with string keys from the given location using the provided field ID. */
 const parseRecordFromLocation = (
   location: Location,
-  fieldId: string | undefined
+  fieldId: string | undefined,
 ): Record<string, any> | undefined => {
   return resolveProjectedField(location, fieldId);
 };
@@ -1567,7 +1591,7 @@ const parseRecordFromLocation = (
 /** Parses an hours object from the given location using the provided hours field ID. */
 const parseHoursFromLocation = (
   location: Location,
-  hoursFieldId: string | undefined
+  hoursFieldId: string | undefined,
 ): HoursType | undefined => {
   return resolveProjectedField(location, hoursFieldId) as HoursType;
 };
@@ -1578,7 +1602,7 @@ const parseHoursFromLocation = (
  */
 const resolveProjectedField = (
   object: Record<string, any>,
-  projectFieldId: string | undefined
+  projectFieldId: string | undefined,
 ): any => {
   if (!projectFieldId) {
     return undefined;

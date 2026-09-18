@@ -3,6 +3,7 @@ import type { SectionConfig } from "@yext/visual-editor";
 import { useState } from "react";
 import type { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   createItemSource,
   EntityField,
@@ -47,16 +48,16 @@ type PrivateWealthFaqSectionProps = {
 };
 
 const faqItemSource = createItemSource<FaqItemFields>({
-  label: "FAQ Items",
+  label: msg("fields.faqItems", "FAQ Items"),
   mappingFields: {
     question: {
       type: "entityField",
-      label: "Question",
+      label: msg("fields.question", "Question"),
       filter: { types: ["type.string"] },
     },
     answer: {
       type: "entityField",
-      label: "Answer",
+      label: msg("fields.answer", "Answer"),
       filter: { types: ["type.rich_text_v2"] },
     },
   },
@@ -154,41 +155,41 @@ const faqItemSource = createItemSource<FaqItemFields>({
 
 const privateWealthFaqFields: YextFields<PrivateWealthFaqSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   heading: {
-    label: "Heading",
+    label: msg("fields.heading", "Heading"),
     type: "object",
     objectFields: {
       text: {
         type: "entityField",
-        label: "Text",
+        label: msg("fields.text", "Text"),
         filter: {
           types: ["type.string"],
         },
       },
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector",
         options: "SITE_COLOR",
       },
@@ -196,34 +197,34 @@ const privateWealthFaqFields: YextFields<PrivateWealthFaqSectionProps> = {
   },
   items: faqItemSource.field,
   itemStyles: {
-    label: "FAQ Item Styles",
+    label: msg("fields.faqItemStyles", "FAQ Item Styles"),
     type: "object",
     objectFields: {
       question: {
-        label: "Question",
+        label: msg("fields.question", "Question"),
         type: "object",
         objectFields: {
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       answer: {
-        label: "Answer",
+        label: msg("fields.answer", "Answer"),
         type: "object",
         objectFields: {
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
@@ -377,7 +378,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
 
 export const PrivateWealthFaqSection: YextComponentConfig<PrivateWealthFaqSectionProps> =
   {
-    label: "FAQ Section",
+    label: msg("components.faqSection", "FAQ Section"),
     fields: privateWealthFaqFields,
     defaultProps: {
       heading: {

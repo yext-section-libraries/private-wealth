@@ -3,6 +3,7 @@ import type { SectionConfig } from "@yext/visual-editor";
 import * as React from "react";
 import type { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   createItemSource,
@@ -76,40 +77,40 @@ type PrivateWealthMeetTeamSectionProps = {
 };
 
 const teamMembersSource = createItemSource<TeamMemberFields>({
-  label: "Team Members",
+  label: msg("fields.teamMembers", "Team Members"),
   mappingFields: {
     name: {
       type: "entityField",
-      label: "Name",
+      label: msg("fields.name", "Name"),
       filter: { types: ["type.string"] },
     },
     role: {
       type: "entityField",
-      label: "Position",
+      label: msg("fields.position", "Position"),
       filter: { types: ["type.string"] },
     },
     credentials: {
       type: "entityField",
-      label: "Credentials",
+      label: msg("fields.credentials", "Credentials"),
       filter: { types: ["type.string"] },
     },
     licenses: {
       type: "entityField",
-      label: "Licenses",
+      label: msg("fields.licenses", "Licenses"),
       filter: { types: ["type.string"] },
     },
     specialties: {
       type: "entityField",
-      label: "Specialties",
+      label: msg("fields.specialties", "Specialties"),
       filter: { types: ["type.rich_text_v2"] },
     },
     image: {
       type: "entityField",
-      label: "Image",
+      label: msg("fields.image", "Image"),
       filter: { types: ["type.image"] },
     },
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA",
     },
   },
@@ -153,10 +154,10 @@ const teamMembersSource = createItemSource<TeamMemberFields>({
         },
         constantValueEnabled: true,
       },
-      cta: createDefaultComprehensiveCTA(
-        "Advisor page",
-        { variant: "link", buttonBorderRadius: "default" },
-      ),
+      cta: createDefaultComprehensiveCTA("Advisor page", {
+        variant: "link",
+        buttonBorderRadius: "default",
+      }),
     },
     {
       name: {
@@ -197,10 +198,10 @@ const teamMembersSource = createItemSource<TeamMemberFields>({
         },
         constantValueEnabled: true,
       },
-      cta: createDefaultComprehensiveCTA(
-        "Advisor page",
-        { variant: "link", buttonBorderRadius: "default" },
-      ),
+      cta: createDefaultComprehensiveCTA("Advisor page", {
+        variant: "link",
+        buttonBorderRadius: "default",
+      }),
     },
   ],
 });
@@ -208,46 +209,46 @@ const teamMembersSource = createItemSource<TeamMemberFields>({
 const privateWealthMeetTeamFields: YextFields<PrivateWealthMeetTeamSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
         cardBackgroundColor: {
-          label: "Card Background Color",
+          label: msg("fields.cardBackgroundColor", "Card Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
@@ -255,96 +256,114 @@ const privateWealthMeetTeamFields: YextFields<PrivateWealthMeetTeamSectionProps>
     },
     members: teamMembersSource.field,
     labels: {
-      label: "Labels",
+      label: msg("fields.labels", "Labels"),
       type: "object",
       objectFields: {
         credentials: {
           type: "entityField",
-          label: "Credentials Label",
+          label: msg("fields.credentialsLabel", "Credentials Label"),
           filter: { types: ["type.string"] },
         },
         licenses: {
           type: "entityField",
-          label: "Licenses Label",
+          label: msg("fields.licensesLabel", "Licenses Label"),
           filter: { types: ["type.string"] },
         },
         specialties: {
           type: "entityField",
-          label: "Specialties Label",
+          label: msg("fields.specialtiesLabel", "Specialties Label"),
           filter: { types: ["type.string"] },
         },
       },
     },
     cardStyles: {
-      label: "Card Styles",
+      label: msg("fields.cardStyles", "Card Styles"),
       type: "object",
       objectFields: {
         name: {
-          label: "Name",
+          label: msg("fields.name", "Name"),
           type: "object",
           objectFields: {
-            styles: { label: "Text Styles", type: "styledText" },
+            styles: {
+              label: msg("fields.textStyles", "Text Styles"),
+              type: "styledText",
+            },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         position: {
-          label: "Position",
+          label: msg("fields.position", "Position"),
           type: "object",
           objectFields: {
-            styles: { label: "Text Styles", type: "styledText" },
+            styles: {
+              label: msg("fields.textStyles", "Text Styles"),
+              type: "styledText",
+            },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         labels: {
-          label: "Labels",
+          label: msg("fields.labels", "Labels"),
           type: "object",
           objectFields: {
-            styles: { label: "Text Styles", type: "styledText" },
+            styles: {
+              label: msg("fields.textStyles", "Text Styles"),
+              type: "styledText",
+            },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         values: {
-          label: "Values",
+          label: msg("fields.values", "Values"),
           type: "object",
           objectFields: {
-            styles: { label: "Text Styles", type: "styledText" },
+            styles: {
+              label: msg("fields.textStyles", "Text Styles"),
+              type: "styledText",
+            },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         image: {
-          label: "Image",
+          label: msg("fields.image", "Image"),
           type: "object",
           objectFields: {
             aspectRatio: {
-              label: "Aspect Ratio",
+              label: msg("fields.aspectRatio", "Aspect Ratio"),
               type: "select",
               options: aspectRatioOptions,
             },
             imageConstrain: {
-              label: "Image Constrain",
+              label: msg("fields.imageConstrain", "Image Constrain"),
               type: "select",
               options: [
-                { label: "Fixed", value: "fixed" },
-                { label: "Filled", value: "filled" },
+                { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+                {
+                  label: msg("fields.options.filled", "Filled"),
+                  value: "filled",
+                },
               ],
             },
-            styles: { label: "Image Styles", type: "styledImage" },
+            styles: {
+              label: msg("fields.imageStyles", "Image Styles"),
+              type: "styledImage",
+            },
           },
         },
       },
@@ -661,7 +680,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
 
 export const PrivateWealthMeetTeamSection: YextComponentConfig<PrivateWealthMeetTeamSectionProps> =
   {
-    label: "Meet Team Section",
+    label: msg("components.meetTeamSection", "Meet Team Section"),
     fields: privateWealthMeetTeamFields,
     defaultProps: {
       heading: {

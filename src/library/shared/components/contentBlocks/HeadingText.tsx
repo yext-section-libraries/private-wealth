@@ -3,7 +3,10 @@ import { PuckComponent } from "@puckeditor/core";
 import { useDocument } from "@yext/visual-editor/section-library-support";
 import { EntityField } from "@yext/visual-editor/section-library-support";
 import { YextEntityField } from "@yext/visual-editor/section-library-support";
-import { Heading, HeadingProps } from "@yext/visual-editor/section-library-support";
+import {
+  Heading,
+  HeadingProps,
+} from "@yext/visual-editor/section-library-support";
 import { TranslatableString } from "@yext/visual-editor/section-library-support";
 import { resolveComponentData } from "@yext/visual-editor/section-library-support";
 import { pt, msg } from "@yext/visual-editor/section-library-support";
@@ -14,7 +17,10 @@ import {
 } from "@yext/visual-editor/section-library-support";
 import { resolveDataFromParent } from "@yext/visual-editor/section-library-support";
 import { useTranslation } from "react-i18next";
-import { YextComponentConfig, YextFields } from "@yext/visual-editor/section-library-support";
+import {
+  YextComponentConfig,
+  YextFields,
+} from "@yext/visual-editor/section-library-support";
 
 export type HeadingTextProps = {
   /** The heading text value */
@@ -68,7 +74,9 @@ const HeadingTextWrapper: PuckComponent<HeadingTextProps> = (props) => {
   return resolvedHeadingText ? (
     <div className={`flex w-full ${justifyClass}`}>
       <EntityField
-        displayName={pt("heading", "Heading") + " " + styles.level}
+        displayName={pt("headingLevel", "Heading {{level}}", {
+          level: styles.level,
+        })}
         fieldId={parentData ? parentData.field : data.text.field}
         constantValueEnabled={!parentData && data.text.constantValueEnabled}
       >

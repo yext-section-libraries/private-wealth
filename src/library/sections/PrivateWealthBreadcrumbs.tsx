@@ -1,8 +1,10 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import { AnalyticsScopeProvider, Link } from "@yext/pages-components";
 import {
+  msg,
   EntityField,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -15,11 +17,9 @@ import {
   type YextEntityField,
   type YextFields,
   VisibilityWrapper,
+  pt,
 } from "@yext/visual-editor";
-import {
-  baseTypographyCss,
-  type SectionProps,
-} from "../shared/sectionHelpers";
+import { baseTypographyCss, type SectionProps } from "../shared/sectionHelpers";
 
 type PrivateWealthBreadcrumbsProps = {
   includeCurrentLocation: boolean;
@@ -30,37 +30,37 @@ type PrivateWealthBreadcrumbsProps = {
 const privateWealthBreadcrumbsFields: YextFields<PrivateWealthBreadcrumbsProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible On Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     rootLabel: {
-      label: "Root Label",
+      label: msg("fields.rootLabel", "Root Label"),
       type: "entityField",
       filter: {
         types: ["type.string"],
       },
     },
     includeCurrentLocation: {
-      label: "Include Current Location",
+      label: msg("fields.includeCurrentLocation", "Include Current Location"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
   };
@@ -75,6 +75,7 @@ const privateWealthBreadcrumbsFields: YextFields<PrivateWealthBreadcrumbsProps> 
 const PrivateWealthBreadcrumbsComponent: PuckComponent<
   PrivateWealthBreadcrumbsProps
 > = ({ id, includeCurrentLocation, puck, rootLabel, section }) => {
+  const { t } = useTranslation();
   const streamDocument = useDocument();
   const locale = streamDocument.locale ?? "en";
   const { relativePrefixToRoot } = useTemplateProps<{
@@ -90,8 +91,8 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
     typeof resolvedRootLabelValue === "string" ? resolvedRootLabelValue : "";
   const visibleBreadcrumbs =
     includeCurrentLocation || breadcrumbs.length <= 1
-    ? breadcrumbs
-    : breadcrumbs.slice(0, -1);
+      ? breadcrumbs
+      : breadcrumbs.slice(0, -1);
 
   if (!visibleBreadcrumbs.length) {
     return puck.isEditing ? (
@@ -101,8 +102,10 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
           padding: "18px 24px",
         }}
       >
-        No breadcrumbs available (section will be hidden on live page). Create a
-        directory to enable breadcrumbs.
+        {pt(
+          "noBreadcrumbsAvailable",
+          "No breadcrumbs available (section will be hidden on live page). Create a directory to enable breadcrumbs.",
+        )}
       </p>
     ) : (
       <></>
@@ -122,7 +125,7 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
           className="border-b border-black/10 px-6 py-4 md:px-8 lg:px-10"
           style={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
         >
-          <nav aria-label="Breadcrumb">
+          <nav aria-label={t("breadcrumb", "Breadcrumb")}>
             <ol className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-y-1 text-xs uppercase tracking-[0.14em] md:text-sm">
               {visibleBreadcrumbs.map((breadcrumb, index) => {
                 const isCurrentLocation = index === breadcrumbs.length - 1;
@@ -179,7 +182,7 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
 
 export const PrivateWealthBreadcrumbs: YextComponentConfig<PrivateWealthBreadcrumbsProps> =
   {
-    label: "Breadcrumbs",
+    label: msg("components.breadcrumbs", "Breadcrumbs"),
     fields: privateWealthBreadcrumbsFields,
     defaultProps: {
       includeCurrentLocation: true,

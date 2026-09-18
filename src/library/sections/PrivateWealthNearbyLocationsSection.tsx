@@ -1,6 +1,8 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   EntityField,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -82,41 +84,41 @@ type PrivateWealthNearbyLocationsSectionProps = {
 const privateWealthNearbyLocationsFields: YextFields<PrivateWealthNearbyLocationsSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible On Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
@@ -124,29 +126,29 @@ const privateWealthNearbyLocationsFields: YextFields<PrivateWealthNearbyLocation
     },
 
     radius: {
-      label: "Radius (mi)",
+      label: msg("fields.radiusMi", "Radius (mi)"),
       type: "number",
     },
     limit: {
-      label: "Limit",
+      label: msg("fields.limit", "Limit"),
       type: "number",
     },
     map: {
-      label: "Map",
+      label: msg("fields.map", "Map"),
       type: "object",
       objectFields: {
         coordinate: {
           type: "entityField",
-          label: "Coordinates",
+          label: msg("fields.coordinates", "Coordinates"),
           filter: { types: ["type.coordinate"] },
         },
         mapStyle: {
-          label: "Mapbox Map Style",
+          label: msg("fields.mapboxMapStyle", "Mapbox Map Style"),
           type: "select",
           options: mapboxStaticMapStyleOptions,
         },
         zoom: {
-          label: "Zoom",
+          label: msg("fields.zoom", "Zoom"),
           type: "number",
           min: 0,
           max: 22,
@@ -154,98 +156,113 @@ const privateWealthNearbyLocationsFields: YextFields<PrivateWealthNearbyLocation
       },
     },
     cardStyles: {
-      label: "Nearby Location Styles",
+      label: msg("fields.nearbyLocationStyles", "Nearby Location Styles"),
       type: "object",
       objectFields: {
         title: {
-          label: "Title",
+          label: msg("fields.title", "Title"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         body: {
-          label: "Body",
+          label: msg("fields.body", "Body"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         phone: {
-          label: "Phone",
+          label: msg("fields.phone", "Phone"),
           type: "object",
           objectFields: {
             phoneFormat: {
-              label: "Phone Number Format",
+              label: msg("fields.phoneNumberFormat", "Phone Number Format"),
               type: "radio",
               options: [
-                { label: "Domestic", value: "domestic" },
-                { label: "International", value: "international" },
+                {
+                  label: msg("fields.options.domestic", "Domestic"),
+                  value: "domestic",
+                },
+                {
+                  label: msg("fields.options.international", "International"),
+                  value: "international",
+                },
               ],
             },
             includeHyperlink: {
-              label: "Include Phone Hyperlink",
+              label: msg(
+                "fields.includePhoneHyperlink",
+                "Include Phone Hyperlink",
+              ),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
         },
         address: {
-          label: "Address",
+          label: msg("fields.address", "Address"),
           type: "object",
           objectFields: {
             showRegion: {
-              label: "Show Region",
+              label: msg("fields.showRegion", "Show Region"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
             showCountry: {
-              label: "Show Country",
+              label: msg("fields.showCountry", "Show Country"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
         },
         getDirectionsLink: {
-          label: "Get Directions Link",
+          label: msg("fields.getDirectionsLink", "Get Directions Link"),
           type: "object",
           objectFields: {
             variant: {
-              label: "Variant",
+              label: msg("fields.variant", "Variant"),
               type: "radio",
               options: [
-                { label: "Solid", value: "primary" },
-                { label: "Outline", value: "secondary" },
-                { label: "Link", value: "link" },
+                {
+                  label: msg("fields.options.solid", "Solid"),
+                  value: "primary",
+                },
+                {
+                  label: msg("fields.options.outline", "Outline"),
+                  value: "secondary",
+                },
+                { label: msg("fields.options.link", "Link"), value: "link" },
               ],
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
@@ -266,6 +283,7 @@ const privateWealthNearbyLocationsFields: YextFields<PrivateWealthNearbyLocation
 const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
   PrivateWealthNearbyLocationsSectionProps
 > = ({ cardStyles, heading, id, limit, map, puck, radius, section }) => {
+  const { t } = useTranslation();
   const streamDocument = useDocument<
     StreamDocument & {
       yextDisplayCoordinate?: Coordinate;
@@ -525,7 +543,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
                           href={directionsUrl}
                           style={getDirectionsLinkStyle}
                         >
-                          Get directions
+                          {t("getDirections", "Get Directions")}
                         </Link>
                       </div>
                     ) : null}
@@ -542,7 +560,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
 
 export const PrivateWealthNearbyLocationsSection: YextComponentConfig<PrivateWealthNearbyLocationsSectionProps> =
   {
-    label: "Nearby Locations Section",
+    label: msg("components.nearbyLocationsSection", "Nearby Locations Section"),
     fields: privateWealthNearbyLocationsFields,
     defaultProps: {
       cardStyles: {
