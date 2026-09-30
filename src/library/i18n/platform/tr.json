@@ -38,11 +38,13 @@
     "resourcesSection": "Kaynaklar Bölümü",
     "testimonialsSection": "Müşteri Görüşleri Bölümü"
   },
+  "currentLocation": "Mevcut Konum",
   "customSearchArea": "Özel arama alanı",
   "distance": "Mesafe",
   "distanceLineFromSearch": "Aramadan <strong>{{distance}}</strong>",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong>, {{searchLocation}}'den",
   "distanceLineFromYou": "<strong>{{distance}}</strong> sizden",
+  "email": "E-posta",
   "enableCookies": "Çerezleri Etkinleştir",
   "fields": {
     "accentColor": "Vurgu Rengi",
