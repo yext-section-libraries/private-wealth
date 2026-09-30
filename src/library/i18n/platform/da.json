@@ -38,11 +38,13 @@
     "resourcesSection": "Ressourcesektion",
     "testimonialsSection": "Sektion med kundeudtalelser"
   },
+  "currentLocation": "Nuværende placering",
   "customSearchArea": "Brugerdefineret søgeområde",
   "distance": "Afstand",
   "distanceLineFromSearch": "<strong>{{distance}}</strong> fra søgning",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong> fra {{searchLocation}}",
   "distanceLineFromYou": "<strong>{{distance}}</strong> fra dig",
+  "email": "E-mail",
   "enableCookies": "Aktiver cookies",
   "fields": {
     "accentColor": "Accent farve",

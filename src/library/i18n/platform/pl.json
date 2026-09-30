@@ -40,11 +40,13 @@
     "resourcesSection": "Sekcja Zasoby",
     "testimonialsSection": "Sekcja Opinie klientów"
   },
+  "currentLocation": "Aktualna lokalizacja",
   "customSearchArea": "Niestandardowy obszar wyszukiwania",
   "distance": "Dystans",
   "distanceLineFromSearch": "<strong>{{distance}}</strong> z wyszukiwania",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong> od {{searchLocation}}",
   "distanceLineFromYou": "<strong>{{distance}}</strong> od Ciebie",
+  "email": "E-mail",
   "enableCookies": "Włącz pliki cookie",
   "fields": {
     "accentColor": "Kolor akcentujący",
