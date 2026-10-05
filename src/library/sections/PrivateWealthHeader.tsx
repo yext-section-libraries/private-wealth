@@ -31,7 +31,6 @@ import {
   type YextEntityField,
   type YextFields,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   i18nPageInstance,
   isDarkColor,
@@ -41,6 +40,7 @@ import {
   useDocument,
 } from "@yext/visual-editor";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
 } from "../shared/sectionHelpers";
 
@@ -632,7 +632,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
 
-  const headerSurfaceStyle = getSurfaceColorStyle(
+  const headerSurfaceStyle = getContrastSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );

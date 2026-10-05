@@ -8,7 +8,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   Image,
   resolveComponentData,
   useDocument,
@@ -19,6 +18,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -174,7 +174,7 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
     streamDocument,
   );
   const resolvedBody = resolveComponentData(body.text, locale, streamDocument);
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

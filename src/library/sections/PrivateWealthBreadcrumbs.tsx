@@ -8,7 +8,6 @@ import {
   msg,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveBreadcrumbs,
   resolveComponentData,
   useDocument,
@@ -20,7 +19,10 @@ import {
   VisibilityWrapper,
   pt,
 } from "@yext/visual-editor";
-import { type SectionProps } from "../shared/sectionHelpers";
+import {
+  getContrastSurfaceStyle,
+  type SectionProps,
+} from "../shared/sectionHelpers";
 
 type PrivateWealthBreadcrumbsProps = {
   includeCurrentLocation: boolean;
@@ -122,7 +124,7 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
       >
         <section
           className="border-b border-current/10 px-4 py-pageSection-verticalPadding md:px-6"
-          style={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
+          style={getContrastSurfaceStyle(section.backgroundColor, streamDocument)}
         >
           <nav aria-label={t("breadcrumb", "Breadcrumb")}>
             <ol className="mx-auto flex max-w-pageSection-contentWidth flex-wrap items-center gap-y-1">

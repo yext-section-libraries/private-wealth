@@ -9,7 +9,6 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getDefaultRTF,
   resolveComponentData,
   useDocument,
@@ -22,6 +21,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider, useAnalytics } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   createDefaultStyledTextValue,
   getRichTextStyleOverrides,
   getTextStyles,
@@ -255,7 +255,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -263,6 +263,8 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
   const questionStyle = getTextStyles(
     itemStyles.question.styles,
     itemStyles.question.fontColor,
+    section.backgroundColor,
+    streamDocument,
   );
   const answerRichTextStyleOverrides = getRichTextStyleOverrides(
     itemStyles.answer.styles,
@@ -292,7 +294,12 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
               >
                 <h2
                   className="text-center"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>

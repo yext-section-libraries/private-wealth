@@ -11,7 +11,6 @@ import {
   EntityField,
   getDefaultRTF,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   Image,
   resolveComponentData,
   useDocument,
@@ -31,6 +30,7 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -389,7 +389,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -397,7 +397,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
     members as unknown as typeof teamMembersSource.value,
     streamDocument,
   );
-  const cardSurfaceStyle = getSurfaceColorStyle(
+  const cardSurfaceStyle = getContrastSurfaceStyle(
     section.cardBackgroundColor,
     streamDocument,
   );
@@ -413,23 +413,31 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
   const nameStyle = getTextStyles(
     cardStyles.name.styles,
     cardStyles.name.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const positionStyle = getTextStyles(
     cardStyles.position.styles,
     cardStyles.position.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const labelStyle = getTextStyles(
     cardStyles.labels.styles,
     cardStyles.labels.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const valueStyle = getTextStyles(
     cardStyles.values.styles,
     cardStyles.values.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const richTextValueStyle = getRichTextStyleOverrides(
     cardStyles.values.styles,
     cardStyles.values.fontColor,
-    section.backgroundColor,
+    section.cardBackgroundColor,
     streamDocument,
   );
   const imageWrapperStyle: React.CSSProperties = {
@@ -470,7 +478,12 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
               >
                 <h2
                   className="text-center"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>

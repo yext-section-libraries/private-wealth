@@ -11,7 +11,6 @@ import {
   EntityField,
   getDefaultRTF,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -34,6 +33,7 @@ import {
   type HoursType,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   createDefaultComprehensiveCTA,
   createDefaultStyledTextValue,
   getRichTextStyleOverrides,
@@ -715,25 +715,31 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
 
     return items;
   }, []);
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
-  const cardSurfaceStyle = getSurfaceColorStyle(
+  const cardSurfaceStyle = getContrastSurfaceStyle(
     cards.backgroundColor,
     streamDocument,
   );
   const cardTitleStyle = getTextStyles(
     cards.titleStyles.styles,
     cards.titleStyles.fontColor,
+    cards.backgroundColor,
+    streamDocument,
   );
   const cardSubheadingStyle = getTextStyles(
     cards.subheadingStyles.styles,
     cards.subheadingStyles.fontColor,
+    cards.backgroundColor,
+    streamDocument,
   );
   const cardContentStyle = getTextStyles(
     cards.contentStyles.styles,
     cards.contentStyles.fontColor,
+    cards.backgroundColor,
+    streamDocument,
   );
   const accessibilityRichTextStyleOverrides = getRichTextStyleOverrides(
     cards.contentStyles.styles,
@@ -784,6 +790,8 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   style={getTextStyles(
                     sectionHeading.styles,
                     sectionHeading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
                   )}
                 >
                   {normalizedSectionHeading}

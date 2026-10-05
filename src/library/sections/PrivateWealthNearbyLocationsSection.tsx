@@ -6,7 +6,6 @@ import {
   msg,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   mapboxStaticMapStyleOptions,
   MapboxStaticMapComponent,
@@ -33,6 +32,7 @@ import {
 import type { PuckComponent } from "@puckeditor/core";
 import type { CSSProperties } from "react";
 import {
+  getContrastSurfaceStyle,
   createDefaultStyledTextValue,
   getTextStyles,
   type SectionProps,
@@ -317,7 +317,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
       limit,
       enabled: enableNearbyLocations,
     });
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

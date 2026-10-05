@@ -10,7 +10,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -28,6 +27,7 @@ import {
   type StatusParams,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -259,7 +259,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
   const resolvedHours = resolveComponentData(hours, locale, streamDocument);
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

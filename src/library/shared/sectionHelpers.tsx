@@ -2,6 +2,7 @@ import * as React from "react";
 import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
   MaybeRTF,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   isDarkColor,
   type ComprehensiveCTAValue,
@@ -138,7 +139,8 @@ export const getTextStyles = (
   streamDocument?: StreamDocument,
 ): React.CSSProperties => ({
   color:
-    getThemeColorCssValue(fontColor ?? styles.color) ??
+    getThemeColorCssValue(fontColor) ??
+    getThemeColorCssValue(styles.color) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
         ? "#fff"
@@ -152,6 +154,14 @@ export const getTextStyles = (
     styles.textTransform === "default" ? undefined : styles.textTransform,
 });
 
+export const getContrastSurfaceStyle = (
+  surfaceColor: ThemeColor,
+  streamDocument?: StreamDocument,
+): React.CSSProperties => ({
+  ...getSurfaceColorStyle(surfaceColor, streamDocument),
+  color: isDarkColor(surfaceColor, streamDocument) ? "#fff" : "#000",
+});
+
 export const getRichTextStyleOverrides = (
   styles: StyledTextValue,
   fontColor?: ThemeColor,
@@ -160,11 +170,12 @@ export const getRichTextStyleOverrides = (
 ): NonNullable<MaybeRTFProps["richTextStyleOverrides"]> => ({
   ...styles,
   color:
-    getThemeColorCssValue(fontColor ?? styles.color) ??
+    (getThemeColorCssValue(fontColor) ? fontColor : undefined) ??
+    (getThemeColorCssValue(styles.color) ? styles.color : undefined) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
-        ? "#fff"
-        : "#000"
+        ? "white"
+        : "black"
       : undefined),
 });
 
@@ -192,6 +203,37 @@ export const renderResolvedRichText = (
     ...(resolvedColor ? { color: resolvedColor } : {}),
   };
 
+  // Generated rich-text defaults include inline black text. Remove that
+  // boilerplate color on dark surfaces while preserving colors edited in RTF.
+  const renderData = (data: RichText | string | undefined) =>
+    typeof data === "object" &&
+    typeof data.html === "string" &&
+    (typeof data.json !== "string" ||
+      !/"style":"[^"]*color\s*:/i.test(data.json)) &&
+    color === "white"
+      ? {
+          ...data,
+          html: data.html.replace(
+            /style="([^"]*)"/g,
+            (attribute, declarations: string) => {
+              if (!/font-size:\s*14\.67px/i.test(declarations)) {
+                return attribute;
+              }
+              const styles = declarations
+                .split(";")
+                .filter(
+                  (declaration) =>
+                    !/^\s*color\s*:\s*(?:rgb\(0,\s*0,\s*0\)|#000000|#000)\s*$/i.test(
+                      declaration,
+                    ),
+                )
+                .join(";");
+              return styles.trim() ? `style="${styles}"` : "";
+            },
+          ),
+        }
+      : data;
+
   if (React.isValidElement(value)) {
     if (!richTextStyleOverrides) {
       return value;
@@ -199,6 +241,7 @@ export const renderResolvedRichText = (
     if (value.type === MaybeRTF) {
       const element = value as React.ReactElement<MaybeRTFProps>;
       return React.cloneElement(element, {
+        data: renderData(element.props.data),
         richTextStyleOverrides: {
           ...element.props.richTextStyleOverrides,
           ...textStyles,
@@ -223,6 +266,7 @@ export const renderResolvedRichText = (
       children: richTextChild
         ? child.type === MaybeRTF
           ? React.cloneElement(child as React.ReactElement<MaybeRTFProps>, {
+              data: renderData(child.props.data),
               richTextStyleOverrides: {
                 ...child.props.richTextStyleOverrides,
                 ...textStyles,
@@ -246,7 +290,7 @@ export const renderResolvedRichText = (
 
   return (
     <MaybeRTF
-      data={data}
+      data={renderData(data)}
       richTextStyleOverrides={{ ...textStyles, color }}
       style={wrapperStyle}
     />

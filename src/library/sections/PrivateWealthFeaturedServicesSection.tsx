@@ -10,7 +10,6 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -30,6 +29,7 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -336,7 +336,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -347,6 +347,8 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
   const cardTitleStyle = getTextStyles(
     cardStyles.title.styles,
     cardStyles.title.fontColor,
+    section.backgroundColor,
+    streamDocument,
   );
   const cardDescriptionStyleOverrides = getRichTextStyleOverrides(
     cardStyles.description.styles,
@@ -392,7 +394,12 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
               >
                 <h2
                   className="text-center"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>

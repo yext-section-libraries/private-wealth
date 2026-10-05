@@ -8,7 +8,6 @@ import {
   EntityField,
   getAggregateRating,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
   type StreamDocument,
@@ -18,6 +17,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   createDefaultStyledTextValue,
   getTextStyles,
   type SectionProps,
@@ -234,7 +234,7 @@ const PrivateWealthTestimonialsSectionComponent: PuckComponent<
     (aggregate) => aggregate.publisher === "FIRSTPARTY",
   );
   const reviews = (firstPartyAggregate?.topReviews ?? []).slice(0, 3);
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

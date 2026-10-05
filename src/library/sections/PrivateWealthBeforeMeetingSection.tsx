@@ -9,7 +9,6 @@ import {
   EntityField,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   Image,
   resolveComponentData,
   useDocument,
@@ -20,6 +19,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -196,7 +196,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

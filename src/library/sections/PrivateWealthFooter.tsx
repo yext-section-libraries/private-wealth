@@ -8,7 +8,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -18,6 +17,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   createDefaultComprehensiveCTA,
   createDefaultStyledTextValue,
   getTextStyles,
@@ -121,7 +121,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
   );
   const resolvedBrandLabel =
     typeof resolvedBrandLabelValue === "string" ? resolvedBrandLabelValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

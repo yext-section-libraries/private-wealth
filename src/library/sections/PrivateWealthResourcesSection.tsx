@@ -8,7 +8,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -20,6 +19,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
@@ -179,7 +179,7 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -237,7 +237,12 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    style={getTextStyles(heading.styles, heading.fontColor)}
+                    style={getTextStyles(
+                      heading.styles,
+                      heading.fontColor,
+                      section.backgroundColor,
+                      streamDocument,
+                    )}
                   >
                     {resolvedHeading}
                   </h2>
