@@ -20,6 +20,7 @@ import {
   pt,
 } from "@yext/visual-editor";
 import {
+  getRichTextStyleOverrides,
   isRichTextEmpty,
   renderResolvedRichText,
   type SectionProps,
@@ -118,15 +119,14 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
       <PageSection
         background={section.backgroundColor}
         className="flex items-center justify-center"
-        verticalPadding="sm"
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
           <CircleSlash2 className="h-10 w-10 flex-shrink-0 text-gray-400" />
           <div className="flex flex-col items-start">
-            <Body className="font-medium text-gray-500" variant="sm">
+            <Body className="text-gray-500" variant="sm">
               {pt("sectionHiddenForThisPage", "Section hidden for this page")}
             </Body>
-            <Body className="font-normal text-gray-500" variant="sm">
+            <Body className="text-gray-500" variant="sm">
               {pt("mappedBannerFieldEmpty", "The mapped banner field is empty")}
             </Body>
           </div>
@@ -135,10 +135,12 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
     );
   }
 
-  const richTextStyleOverrides = {
-    ...data.styles,
-    color: data.fontColor ?? section.backgroundColor.contrastingColor,
-  };
+  const richTextStyleOverrides = getRichTextStyleOverrides(
+    data.styles,
+    data.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
   const resolvedText = resolveComponentData(
     data.text,
     i18n.language,
@@ -159,7 +161,6 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
           right: "justify-end text-right",
         }[styles.textAlignment]
       }`}
-      verticalPadding="sm"
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}
@@ -177,7 +178,7 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
  */
 export const PrivateWealthBanner: YextComponentConfig<PrivateWealthBannerProps> =
   {
-    label: msg("components.banner", "Banner"),
+    label: msg("components.banner", "Banner Section"),
     fields: PrivateWealthBannerFields,
     defaultProps: {
       data: {
@@ -216,7 +217,7 @@ export const PrivateWealthBanner: YextComponentConfig<PrivateWealthBannerProps> 
 
 export const config: SectionConfig = {
   id: "PrivateWealthBanner",
-  displayName: "Banner",
+  displayName: "Banner Section",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

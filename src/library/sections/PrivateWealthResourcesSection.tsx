@@ -8,9 +8,7 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
   getSurfaceColorStyle,
-  isDarkColor,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -26,6 +24,7 @@ import {
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type SectionProps,
@@ -162,12 +161,12 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const bodyRichTextStyleOverrides = {
-    ...body.styles,
-    color:
-      getThemeColorCssValue(body.fontColor) ??
-      (isDarkColor(section.backgroundColor, streamDocument) ? "#fff" : "#000"),
-  };
+  const bodyRichTextStyleOverrides = getRichTextStyleOverrides(
+    body.styles,
+    body.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
   const resolvedBodyValue = resolveComponentData(
     body.text,
     locale,
@@ -181,10 +180,6 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
     streamDocument,
   );
   const sectionSurfaceStyle = getSurfaceColorStyle(
-    section.backgroundColor,
-    streamDocument,
-  );
-  const hasDarkBackground = isDarkColor(
     section.backgroundColor,
     streamDocument,
   );
@@ -218,7 +213,7 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
             style={sectionSurfaceStyle}
           >
             <div className="mx-auto grid max-w-pageSection-contentWidth items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-              <div className="order-1 rounded-lg bg-white/8 p-4 md:p-6">
+              <div className="order-1 rounded-lg p-4 md:p-6">
                 {resolvedImage ? (
                   <EntityField
                     displayName={msg("fields.image", "Image")}
@@ -242,7 +237,6 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="tracking-[-0.04em]"
                     style={getTextStyles(heading.styles, heading.fontColor)}
                   >
                     {resolvedHeading}
@@ -253,14 +247,14 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
-                  <div className="mx-auto mt-5 max-w-[46ch] text-sm leading-7 opacity-75 md:text-base">
+                  <div className="mx-auto mt-5 max-w-[46ch]">
                     {renderResolvedRichText(
                       resolvedBodyValue,
                       bodyRichTextStyleOverrides,
                     )}
                   </div>
                 </EntityField>
-                <div aria-hidden="true" className="mt-5 text-xl leading-none">
+                <div aria-hidden="true" className="mt-5 text-xl">
                   ✦
                 </div>
                 <div className="mt-8 flex justify-center">
@@ -272,12 +266,8 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         cta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-8 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="primaryCta"
                       value={cta as Partial<ComprehensiveCTAValue>}

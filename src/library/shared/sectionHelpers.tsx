@@ -91,14 +91,8 @@ export const createDefaultComprehensiveCTA = (
   const {
     link = "#",
     variant = "primary",
-    color =
-      variant === "link"
-        ? undefined
-        : {
-            selectedColor: "palette-tertiary",
-            contrastingColor: "palette-tertiary-contrast",
-          },
-    buttonBorderRadius = "lg",
+    color,
+    buttonBorderRadius = "default",
     includeCaret = "default",
   } = options;
 
@@ -144,7 +138,7 @@ export const getTextStyles = (
   streamDocument?: StreamDocument,
 ): React.CSSProperties => ({
   color:
-    getThemeColorCssValue(fontColor) ??
+    getThemeColorCssValue(fontColor ?? styles.color) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
         ? "#fff"
@@ -166,7 +160,7 @@ export const getRichTextStyleOverrides = (
 ): NonNullable<MaybeRTFProps["richTextStyleOverrides"]> => ({
   ...styles,
   color:
-    getThemeColorCssValue(fontColor) ??
+    getThemeColorCssValue(fontColor ?? styles.color) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
         ? "#fff"

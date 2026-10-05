@@ -9,7 +9,6 @@ import {
   EntityField,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -126,10 +125,6 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
     section.backgroundColor,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
 
   return (
     <VisibilityWrapper
@@ -139,7 +134,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <footer
-            className="px-4 py-6 md:px-6"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
             <div className="mx-auto flex max-w-pageSection-contentWidth flex-col items-center gap-4 text-center md:flex-row md:gap-8 md:text-left">
@@ -149,7 +144,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
                 constantValueEnabled={brandLabel.text.constantValueEnabled}
               >
                 <div
-                  className="components font-body-fontFamily text-body-fontSize font-body-fontWeight tracking-[-0.04em]"
+                  className="components font-body-fontFamily text-body-fontSize font-body-fontWeight"
                   style={getTextStyles(
                     brandLabel.styles,
                     brandLabel.fontColor,
@@ -160,7 +155,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
                   {resolvedBrandLabel}
                 </div>
               </EntityField>
-              <ul className="flex min-w-0 flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm md:flex-1 md:justify-start md:text-left">
+              <ul className="flex min-w-0 flex-wrap items-center justify-center gap-x-6 gap-y-2 md:flex-1 md:justify-start md:text-left">
                 {links.map((link, index) => (
                   <li key={index}>
                     <EntityField
@@ -173,11 +168,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
                       <ComprehensiveCTA
                         className={
                           link.cta.styles.variant === "link"
-                            ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                hasDarkBackground
-                                  ? "border-white/40 hover:border-white"
-                                  : "border-current/15 hover:border-current"
-                              }`
+                            ? "max-w-full w-fit whitespace-normal break-words"
                             : "max-w-full whitespace-normal break-words text-center"
                         }
                         eventName={`footerlink${index}`}

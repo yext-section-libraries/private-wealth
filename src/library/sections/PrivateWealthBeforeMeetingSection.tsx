@@ -11,7 +11,6 @@ import {
   getDefaultRTF,
   getSurfaceColorStyle,
   Image,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -201,10 +200,6 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
     section.backgroundColor,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const imageWrapperStyle = {
     aspectRatio: image.aspectRatio > 0 ? image.aspectRatio : undefined,
     borderRadius:
@@ -259,7 +254,6 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="tracking-[-0.04em]"
                     style={getTextStyles(
                       heading.styles,
                       heading.fontColor,
@@ -275,17 +269,17 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
-                  <div className="mx-auto mt-5 max-w-[46ch] text-sm leading-7 md:text-base">
+                  <div className="mx-auto mt-5 max-w-[46ch]">
                     {renderResolvedRichText(
                       resolvedBodyValue,
                       bodyRichTextStyleOverrides,
                     )}
                   </div>
                 </EntityField>
-                <div aria-hidden="true" className="mt-5 text-xl leading-none">
+                <div aria-hidden="true" className="mt-5 text-xl">
                   ✦
                 </div>
-                <div className="mt-8 flex flex-col items-center gap-3 text-sm">
+                <div className="mt-8 flex flex-col items-center gap-3">
                   {links.map((link, index) => (
                     <EntityField
                       key={index}
@@ -298,11 +292,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
                       <ComprehensiveCTA
                         className={
                           link.cta.styles.variant === "link"
-                            ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                hasDarkBackground
-                                  ? "border-white/40 hover:border-white"
-                                  : "border-current/15 hover:border-current"
-                              }`
+                            ? "max-w-full w-fit whitespace-normal break-words"
                             : "max-w-full whitespace-normal break-words text-center"
                         }
                         eventName={`link${index}`}

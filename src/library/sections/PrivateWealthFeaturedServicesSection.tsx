@@ -10,9 +10,7 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
   getSurfaceColorStyle,
-  isDarkColor,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -36,6 +34,7 @@ import {
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type ImageStyleProps,
@@ -345,20 +344,16 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
     cards as unknown as typeof featuredServicesSource.value,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const cardTitleStyle = getTextStyles(
     cardStyles.title.styles,
     cardStyles.title.fontColor,
   );
-  const cardDescriptionStyleOverrides = {
-    ...cardStyles.description.styles,
-    color:
-      getThemeColorCssValue(cardStyles.description.fontColor) ??
-      (isDarkColor(section.backgroundColor, streamDocument) ? "#fff" : "#000"),
-  };
+  const cardDescriptionStyleOverrides = getRichTextStyleOverrides(
+    cardStyles.description.styles,
+    cardStyles.description.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
   const imageWrapperStyle: React.CSSProperties = {
     aspectRatio:
       cardStyles.image.aspectRatio > 0
@@ -396,7 +391,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center tracking-[-0.04em]"
+                  className="text-center"
                   style={getTextStyles(heading.styles, heading.fontColor)}
                 >
                   {resolvedHeading}
@@ -440,12 +435,12 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                           ) : null}
                         </div>
                         <h3
-                          className="mt-4 leading-none tracking-[-0.04em]"
+                          className="mt-4"
                           style={cardTitleStyle}
                         >
                           {resolvedTitle}
                         </h3>
-                        <div className="mt-3 leading-7 opacity-70">
+                        <div className="mt-3">
                           {renderResolvedRichText(
                             resolvedDescriptionValue,
                             cardDescriptionStyleOverrides,
@@ -455,12 +450,8 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                           <ComprehensiveCTA
                             className={
                               card.cta.styles.variant === "link"
-                                ? `mt-4 max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                    hasDarkBackground
-                                      ? "border-white/40 hover:border-white"
-                                      : "border-current/15 hover:border-current"
-                                  }`
-                                : "mt-4 max-w-full w-fit whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90"
+                                ? "mt-4 max-w-full w-fit whitespace-normal break-words"
+                                : "mt-4 max-w-full w-fit whitespace-normal break-words "
                             }
                             eventName={`card${index}`}
                             value={
@@ -484,12 +475,8 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                   <ComprehensiveCTA
                     className={
                       sectionCta.styles.variant === "link"
-                        ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                            hasDarkBackground
-                              ? "border-white/40 hover:border-white"
-                              : "border-current/15 hover:border-current"
-                          }`
-                        : "max-w-full whitespace-normal break-words px-8 py-3 text-center transition hover:opacity-90"
+                        ? "max-w-full w-fit whitespace-normal break-words"
+                        : "max-w-full whitespace-normal break-words "
                     }
                     eventName="primaryCta"
                     value={sectionCta as Partial<ComprehensiveCTAValue>}
@@ -541,10 +528,6 @@ export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWe
       cards: featuredServicesSource.defaultValue,
       sectionCta: createDefaultComprehensiveCTA("Explore Services", {
         variant: "primary",
-        color: {
-          selectedColor: "palette-tertiary",
-          contrastingColor: "palette-tertiary-contrast",
-        },
       }),
       section: {
         visibleOnLivePage: true,

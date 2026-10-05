@@ -12,8 +12,6 @@ import {
   getDefaultRTF,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -38,6 +36,7 @@ import {
 import {
   createDefaultComprehensiveCTA,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type SectionProps,
@@ -736,17 +735,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
     cards.contentStyles.styles,
     cards.contentStyles.fontColor,
   );
-  const cardContentColor =
-    getThemeColorCssValue(cards.contentStyles.fontColor) ??
-    (isDarkColor(cards.backgroundColor, streamDocument) ? "#fff" : "#000");
-  const hasDarkCardBackground = isDarkColor(
+  const accessibilityRichTextStyleOverrides = getRichTextStyleOverrides(
+    cards.contentStyles.styles,
+    cards.contentStyles.fontColor,
     cards.backgroundColor,
     streamDocument,
   );
-  const accessibilityRichTextStyleOverrides = {
-    ...cards.contentStyles.styles,
-    color: cardContentColor,
-  };
   const resolvedAccessibilityTextValue = resolveComponentData(
     accessibilityText,
     locale,
@@ -786,7 +780,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                 constantValueEnabled={sectionHeading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center tracking-[-0.04em]"
+                  className="text-center"
                   style={getTextStyles(
                     sectionHeading.styles,
                     sectionHeading.fontColor,
@@ -806,13 +800,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     constantValueEnabled={informationTitle.constantValueEnabled}
                   >
                     <h3
-                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedInformationTitle}
                     </h3>
                   </EntityField>
-                  <div className="mt-5 space-y-4 text-sm leading-7 md:text-base">
+                  <div className="mt-5 space-y-4">
                     <div>
                       <EntityField
                         displayName={msg("fields.addressSubheading", "Address Subheading")}
@@ -822,7 +815,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         }
                       >
                         <h4
-                          className="font-semibold"
                           style={cardSubheadingStyle}
                         >
                           {normalizedAddressSubheading}
@@ -850,7 +842,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       <div key={index} style={cardContentStyle}>
                         {item.label ? (
                           <h4
-                            className="font-semibold"
                             style={cardSubheadingStyle}
                           >
                             {item.label}
@@ -863,7 +854,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         >
                           {phones.includeHyperlink ? (
                             <Link
-                              className="underline hover:no-underline"
                               cta={{
                                 link: item.telDigits,
                                 linkType: "PHONE",
@@ -888,7 +878,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                             }
                           >
                             <h4
-                              className="font-semibold"
                               style={cardSubheadingStyle}
                             >
                               {normalizedEmailSubheading}
@@ -927,7 +916,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         }
                       >
                         <h4
-                          className="font-semibold"
                           style={cardSubheadingStyle}
                         >
                           {normalizedNmlsSubheading}
@@ -955,12 +943,8 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       <ComprehensiveCTA
                         className={
                           primaryCta.styles.variant === "link"
-                            ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                hasDarkCardBackground
-                                  ? "border-white/40 hover:border-white"
-                                  : "border-current/15 hover:border-current"
-                              }`
-                            : "w-full max-w-full whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90 sm:w-auto"
+                            ? "max-w-full w-fit whitespace-normal break-words"
+                            : "w-full max-w-full whitespace-normal break-words  sm:w-auto"
                         }
                         eventName="primaryCta"
                         value={primaryCtaValue}
@@ -976,12 +960,8 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       <ComprehensiveCTA
                         className={
                           secondaryCta.styles.variant === "link"
-                            ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                hasDarkCardBackground
-                                  ? "border-white/40 hover:border-white"
-                                  : "border-current/15 hover:border-current"
-                              }`
-                            : "w-full max-w-full whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90 sm:w-auto"
+                            ? "max-w-full w-fit whitespace-normal break-words"
+                            : "w-full max-w-full whitespace-normal break-words  sm:w-auto"
                         }
                         eventName="secondaryCta"
                         value={secondaryCtaValue}
@@ -1000,7 +980,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     constantValueEnabled={hoursTitle.constantValueEnabled}
                   >
                     <h3
-                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedHoursTitle}
@@ -1044,13 +1023,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     constantValueEnabled={servicesTitle.constantValueEnabled}
                   >
                     <h3
-                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedServicesTitle}
                     </h3>
                   </EntityField>
-                  <div className="mt-5 space-y-5 text-sm leading-7 md:text-base">
+                  <div className="mt-5 space-y-5">
                     <div>
                       <EntityField
                         displayName={msg("fields.languagesSubheading", "Languages Subheading")}
@@ -1060,7 +1038,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         }
                       >
                         <h4
-                          className="font-semibold"
                           style={cardSubheadingStyle}
                         >
                           {normalizedLanguagesSubheading}
@@ -1087,7 +1064,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         }
                       >
                         <h4
-                          className="font-semibold"
                           style={cardSubheadingStyle}
                         >
                           {normalizedAccessibilitySubheading}
@@ -1117,7 +1093,6 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         }
                       >
                         <h4
-                          className="font-semibold"
                           style={cardSubheadingStyle}
                         >
                           {normalizedServicesSubheading}

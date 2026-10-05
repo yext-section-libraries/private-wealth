@@ -13,7 +13,6 @@ import {
   getSurfaceColorStyle,
   getDefaultRTF,
   Image,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -264,10 +263,6 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
     section.backgroundColor,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const imageWrapperStyle = {
     aspectRatio: heroImage.aspectRatio > 0 ? heroImage.aspectRatio : undefined,
     borderRadius:
@@ -335,7 +330,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
         : "";
 
     return (
-      <div className="flex items-center gap-1 text-sm font-semibold">
+      <div className="flex items-center gap-1">
         <span
           aria-hidden="true"
           className="h-[0.7rem] w-[0.7rem] shrink-0 rounded-full mr-1"
@@ -380,7 +375,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="max-w-[12ch] leading-[0.95] tracking-[-0.05em]"
+                    className="max-w-[12ch]"
                     style={getTextStyles(
                       heading.styles,
                       heading.fontColor,
@@ -409,7 +404,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     </div>
                   </EntityField>
                 ) : null}
-                <div aria-hidden="true" className="mt-5 text-xl leading-none">
+                <div aria-hidden="true" className="mt-5 text-xl">
                   ✦
                 </div>
                 <EntityField
@@ -417,7 +412,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
-                  <div className="mt-5 max-w-[44ch] text-sm leading-7 md:text-base">
+                  <div className="mt-5 max-w-[44ch]">
                     {renderResolvedRichText(
                       resolvedBodyValue,
                       bodyRichTextStyleOverrides,
@@ -435,12 +430,8 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         primaryCta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-7 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="primaryCta"
                       value={primaryCta as Partial<ComprehensiveCTAValue>}
@@ -456,12 +447,8 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         secondaryCta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-7 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="secondaryCta"
                       value={secondaryCta as Partial<ComprehensiveCTAValue>}

@@ -110,11 +110,6 @@ const linkTypeOptions: Array<{ label: string; value: LinkType }> = [
   { label: msg("fields.email", "Email"), value: "EMAIL" },
 ];
 
-const defaultPrimaryCtaColor: ThemeColor = {
-  selectedColor: "palette-tertiary",
-  contrastingColor: "palette-tertiary-contrast",
-};
-
 const defaultLinkStyles: StyledLinkValue = {
   fontFamily: "default",
   fontSize: "default",
@@ -546,7 +541,6 @@ const PrivateWealthHeaderFields: YextFields<PrivateWealthHeaderProps> = {
             },
             styles: {
               variant: "primary",
-              color: defaultPrimaryCtaColor,
               button: defaultButtonStyles,
               link: defaultLinkStyles,
             },
@@ -844,7 +838,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
               <ComprehensiveCTA
                 value={item.cta as Partial<ComprehensiveCTAValue>}
                 eventName={`headerCta${index}`}
-                className="inline-flex h-10 items-center justify-center px-5 transition-opacity hover:opacity-90"
+                className="inline-flex items-center justify-center"
                 style={getOutlineCtaStyle(item.cta)}
               />
             </EntityField>
@@ -1017,9 +1011,11 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
             : {}),
         }}
       >
-        <div className="hidden lg:block">{desktopVariantContent}</div>
+        <div className="mx-auto hidden max-w-pageSection-contentWidth lg:block">
+          {desktopVariantContent}
+        </div>
 
-        <div className="flex min-h-[82px] items-center gap-4 px-6 md:px-8 lg:hidden">
+        <div className="mx-auto flex min-h-[82px] max-w-pageSection-contentWidth items-center gap-4 px-6 md:px-8 lg:hidden">
           <div className="min-w-0 flex-1">{logoElement}</div>
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
@@ -1033,7 +1029,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
                 <ComprehensiveCTA
                   value={topBarCtaItem.cta as Partial<ComprehensiveCTAValue>}
                   eventName="responsiveTopBarCta"
-                  className="inline-flex h-10 items-center justify-center px-5 transition-opacity hover:opacity-90"
+                  className="inline-flex items-center justify-center"
                   style={getOutlineCtaStyle(topBarCtaItem.cta)}
                 />
               </EntityField>
@@ -1107,7 +1103,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
                           <ComprehensiveCTA
                             value={item.cta as Partial<ComprehensiveCTAValue>}
                             eventName={`tabletOverlayCta${index}`}
-                            className="inline-flex h-10 w-full items-center justify-center px-5 transition-opacity hover:opacity-90"
+                            className="inline-flex w-full items-center justify-center"
                             style={getOutlineCtaStyle(item.cta)}
                           />
                         </EntityField>
@@ -1128,7 +1124,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
                           <ComprehensiveCTA
                             value={item.cta as Partial<ComprehensiveCTAValue>}
                             eventName={`mobileOverlayCta${index}`}
-                            className="inline-flex h-10 w-full items-center justify-center px-5 transition-opacity hover:opacity-90"
+                            className="inline-flex w-full items-center justify-center"
                             style={getOutlineCtaStyle(item.cta)}
                           />
                         </EntityField>
@@ -1289,7 +1285,6 @@ export const PrivateWealthHeader: YextComponentConfig<PrivateWealthHeaderProps> 
               },
               styles: {
                 variant: "primary",
-                color: defaultPrimaryCtaColor,
                 button: defaultButtonStyles,
                 link: defaultLinkStyles,
               },

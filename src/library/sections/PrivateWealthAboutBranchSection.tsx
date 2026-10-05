@@ -10,7 +10,6 @@ import {
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
   Image,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -179,10 +178,6 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
     section.backgroundColor,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const imageWrapperStyle = {
     aspectRatio: image.aspectRatio > 0 ? image.aspectRatio : undefined,
     borderRadius:
@@ -216,7 +211,7 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
             style={sectionSurfaceStyle}
           >
             <div className="mx-auto grid max-w-pageSection-contentWidth items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-              <div className="order-1 rounded-lg bg-white/8 p-4 md:p-6">
+              <div className="order-1 rounded-lg p-4 md:p-6">
                 {resolvedImage ? (
                   <EntityField
                     displayName={msg("fields.image", "Image")}
@@ -240,7 +235,6 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="tracking-[-0.04em]"
                     style={getTextStyles(
                       heading.styles,
                       heading.fontColor,
@@ -256,14 +250,14 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
-                  <div className="yext-private-wealth-about-body mx-auto mt-5 max-w-[52ch] text-sm leading-7 md:text-base">
+                  <div className="yext-private-wealth-about-body mx-auto mt-5 max-w-[52ch]">
                     {renderResolvedRichText(
                       resolvedBody,
                       bodyRichTextStyleOverrides,
                     )}
                   </div>
                 </EntityField>
-                <div aria-hidden="true" className="mt-5 text-xl leading-none">
+                <div aria-hidden="true" className="mt-5 text-xl">
                   ✦
                 </div>
                 <div className="mt-8 flex justify-center">
@@ -275,12 +269,8 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         cta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-8 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="primaryCta"
                       value={cta as Partial<ComprehensiveCTAValue>}

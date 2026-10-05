@@ -9,8 +9,6 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getDefaultForegroundColor,
-  getThemeColorCssValue,
   getSurfaceColorStyle,
   getDefaultRTF,
   resolveComponentData,
@@ -25,6 +23,7 @@ import {
 import { AnalyticsScopeProvider, useAnalytics } from "@yext/pages-components";
 import {
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type SectionProps,
@@ -265,14 +264,12 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
     itemStyles.question.styles,
     itemStyles.question.fontColor,
   );
-  const answerRichTextStyleOverrides = {
-    ...itemStyles.answer.styles,
-    color:
-      getThemeColorCssValue(
-        itemStyles.answer.fontColor ??
-          getDefaultForegroundColor(section.backgroundColor, streamDocument),
-      ) ?? "inherit",
-  };
+  const answerRichTextStyleOverrides = getRichTextStyleOverrides(
+    itemStyles.answer.styles,
+    itemStyles.answer.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
 
   return (
     <VisibilityWrapper
@@ -294,7 +291,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center tracking-[-0.04em]"
+                  className="text-center"
                   style={getTextStyles(heading.styles, heading.fontColor)}
                 >
                   {resolvedHeading}
@@ -334,7 +331,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
                         open={isOpen}
                       >
                         <summary
-                          className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-sm font-semibold md:text-base"
+                          className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left"
                           onClick={(event) => {
                             event.preventDefault();
                             setOpenIndex(isOpen ? -1 : index);
@@ -355,7 +352,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
                           </span>
                         </summary>
                         {isOpen ? (
-                          <div className="pb-4 text-sm leading-7 opacity-70 md:text-base">
+                          <div className="pb-4">
                             {renderResolvedRichText(
                               resolvedAnswerValue,
                               answerRichTextStyleOverrides,

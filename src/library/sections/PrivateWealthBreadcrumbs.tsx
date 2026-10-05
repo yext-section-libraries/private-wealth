@@ -99,7 +99,6 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
     return puck.isEditing ? (
       <p
         style={{
-          fontFamily: "Arial, Helvetica, sans-serif",
           padding: "18px 24px",
         }}
       >
@@ -122,11 +121,11 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
         name={`PrivateWealthBreadcrumbs${getAnalyticsScopeHash(id)}`}
       >
         <section
-          className="border-b border-black/10 px-4 py-4 md:px-6"
+          className="border-b border-current/10 px-4 py-pageSection-verticalPadding md:px-6"
           style={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
         >
           <nav aria-label={t("breadcrumb", "Breadcrumb")}>
-            <ol className="mx-auto flex max-w-pageSection-contentWidth flex-wrap items-center gap-y-1 text-xs uppercase tracking-[0.14em] md:text-sm">
+            <ol className="mx-auto flex max-w-pageSection-contentWidth flex-wrap items-center gap-y-1">
               {visibleBreadcrumbs.map((breadcrumb, index) => {
                 const isCurrentLocation = index === breadcrumbs.length - 1;
                 const label =
@@ -158,14 +157,14 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
                         constantValueEnabled={rootLabel.constantValueEnabled}
                       >
                         <Link
-                          className="transition hover:opacity-60"
+                          className="transition hover:"
                           href={href}
                         >
                           {label}
                         </Link>
                       </EntityField>
                     ) : (
-                      <Link className="transition hover:opacity-60" href={href}>
+                      <Link className="transition hover:" href={href}>
                         {label}
                       </Link>
                     )}

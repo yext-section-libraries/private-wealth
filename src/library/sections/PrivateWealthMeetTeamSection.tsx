@@ -11,9 +11,7 @@ import {
   EntityField,
   getDefaultRTF,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
   getSurfaceColorStyle,
-  isDarkColor,
   Image,
   resolveComponentData,
   useDocument,
@@ -37,6 +35,7 @@ import {
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type ImageStyleProps,
@@ -402,10 +401,6 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
     section.cardBackgroundColor,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const resolveLabel = (label: YextEntityField<TranslatableString>) => {
     const value = resolveComponentData(label, locale, streamDocument);
     return typeof value === "string" ? value : "";
@@ -431,12 +426,12 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
     cardStyles.values.styles,
     cardStyles.values.fontColor,
   );
-  const richTextValueStyle = {
-    ...cardStyles.values.styles,
-    color:
-      getThemeColorCssValue(cardStyles.values.fontColor) ??
-      (hasDarkBackground ? "#fff" : "#000"),
-  };
+  const richTextValueStyle = getRichTextStyleOverrides(
+    cardStyles.values.styles,
+    cardStyles.values.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
   const imageWrapperStyle: React.CSSProperties = {
     aspectRatio:
       cardStyles.image.aspectRatio > 0
@@ -474,7 +469,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center tracking-[-0.04em]"
+                  className="text-center"
                   style={getTextStyles(heading.styles, heading.fontColor)}
                 >
                   {resolvedHeading}
@@ -567,18 +562,17 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                           </div>
                           <div className="flex-1 text-center md:text-left">
                             <h3
-                              className="leading-none tracking-[-0.04em]"
                               style={nameStyle}
                             >
                               {resolvedName}
                             </h3>
                             <p
-                              className="mt-3 text-sm font-semibold md:text-base"
+                              className="mt-3"
                               style={positionStyle}
                             >
                               {resolvedRole}
                             </p>
-                            <div className="mt-4 space-y-2 text-sm leading-7 opacity-70">
+                            <div className="mt-4 space-y-2">
                               <p>
                                 <EntityField
                                   displayName={msg("fields.credentialsLabel", "Credentials Label")}
@@ -588,7 +582,6 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.credentials}:
@@ -607,7 +600,6 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.licenses}:
@@ -626,7 +618,6 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.specialties}:
@@ -642,12 +633,8 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                               <ComprehensiveCTA
                                 className={
                                   member.cta.styles.variant === "link"
-                                    ? `mt-5 max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                        hasDarkBackground
-                                          ? "border-white/40 hover:border-white"
-                                          : "border-current/15 hover:border-current"
-                                      }`
-                                    : "mt-5 max-w-full w-fit whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90"
+                                    ? "mt-5 max-w-full w-fit whitespace-normal break-words"
+                                    : "mt-5 max-w-full w-fit whitespace-normal break-words "
                                 }
                                 eventName={`card${index}`}
                                 value={
