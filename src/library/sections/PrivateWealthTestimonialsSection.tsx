@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
@@ -17,7 +18,6 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
-  baseTypographyCss,
   createDefaultStyledTextValue,
   getTextStyles,
   type SectionProps,
@@ -274,16 +274,15 @@ const PrivateWealthTestimonialsSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         {reviews.length ? (
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1320px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
@@ -380,12 +379,11 @@ const PrivateWealthTestimonialsSectionComponent: PuckComponent<
                       ) : null}
                       <footer className="mt-5">
                         {review.authorName ? (
-                          <div
-                            className="font-serif text-lg"
+                          <h3
                             style={reviewNameStyle}
                           >
                             {review.authorName}
-                          </div>
+                          </h3>
                         ) : null}
                         {showDates && reviewDate ? (
                           <time
@@ -427,12 +425,12 @@ const PrivateWealthTestimonialsSectionComponent: PuckComponent<
           </section>
         ) : puck.isEditing ? (
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1320px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >

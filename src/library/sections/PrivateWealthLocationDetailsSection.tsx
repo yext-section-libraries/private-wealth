@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -38,7 +39,6 @@ import {
   createDefaultComprehensiveCTA,
   createDefaultStyledTextValue,
   getTextStyles,
-  headingTypographyCss,
   renderResolvedRichText,
   type SectionProps,
   type StyledTextProps,
@@ -765,8 +765,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{`${headingTypographyCss}
-.yext-private-wealth-hours { width: 100%; min-width: 0; }
+      <style>{`.yext-private-wealth-hours { width: 100%; min-width: 0; }
 .yext-private-wealth-hours .HoursTable { width: 100%; min-width: 0; max-width: 100%; }
 .yext-private-wealth-hours .HoursTable-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 0.75rem; width: 100%; min-width: 0; }
 .yext-private-wealth-hours .HoursTable-day, .yext-private-wealth-hours .HoursTable-intervals, .yext-private-wealth-hours .HoursTable-interval { min-width: 0; }
@@ -777,17 +776,17 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={sectionHeading.text.field}
                 constantValueEnabled={sectionHeading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center font-serif text-4xl tracking-[-0.04em] md:text-5xl"
+                  className="text-center tracking-[-0.04em]"
                   style={getTextStyles(
                     sectionHeading.styles,
                     sectionHeading.fontColor,
@@ -802,12 +801,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   style={cardSurfaceStyle}
                 >
                   <EntityField
-                    displayName="Information Card Title"
+                    displayName={msg("fields.informationCard", "Information Card")}
                     fieldId={informationTitle.field}
                     constantValueEnabled={informationTitle.constantValueEnabled}
                   >
                     <h3
-                      className="font-serif text-[1.9rem] leading-none tracking-[-0.04em]"
+                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedInformationTitle}
@@ -816,7 +815,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   <div className="mt-5 space-y-4 text-sm leading-7 md:text-base">
                     <div>
                       <EntityField
-                        displayName="Address Subheading"
+                        displayName={msg("fields.addressSubheading", "Address Subheading")}
                         fieldId={addressSubheading.field}
                         constantValueEnabled={
                           addressSubheading.constantValueEnabled
@@ -831,7 +830,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       </EntityField>
                       {resolvedAddress ? (
                         <EntityField
-                          displayName="Address"
+                          displayName={msg("fields.address", "Address")}
                           fieldId={address.address.field}
                           constantValueEnabled={
                             address.address.constantValueEnabled
@@ -858,7 +857,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                           </h4>
                         ) : null}
                         <EntityField
-                          displayName={item.label || "Phone Number"}
+                          displayName={item.label || msg("fields.phoneNumber", "Phone Number")}
                           fieldId={item.fieldId}
                           constantValueEnabled={item.constantValueEnabled}
                         >
@@ -882,7 +881,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       <div style={cardContentStyle}>
                         {normalizedEmailSubheading ? (
                           <EntityField
-                            displayName="Email Subheading"
+                            displayName={msg("fields.email", "Email")}
                             fieldId={emails.subheading.field}
                             constantValueEnabled={
                               emails.subheading.constantValueEnabled
@@ -897,7 +896,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                           </EntityField>
                         ) : null}
                         <EntityField
-                          displayName="Emails"
+                          displayName={msg("fields.emails", "Emails")}
                           fieldId={emails.list.field}
                           constantValueEnabled={
                             emails.list.constantValueEnabled
@@ -921,7 +920,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     ) : null}
                     <div>
                       <EntityField
-                        displayName="NMLS Subheading"
+                        displayName={msg("fields.nmlsSubheading", "NMLS Subheading")}
                         fieldId={nmlsSubheading.field}
                         constantValueEnabled={
                           nmlsSubheading.constantValueEnabled
@@ -935,7 +934,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         </h4>
                       </EntityField>
                       <EntityField
-                        displayName="NMLS Value"
+                        displayName={msg("fields.nmlsValue", "NMLS Value")}
                         fieldId={nmlsValue.field}
                         constantValueEnabled={nmlsValue.constantValueEnabled}
                       >
@@ -947,7 +946,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   </div>
                   <div className="mt-auto flex flex-wrap gap-3 pt-8">
                     <EntityField
-                      displayName="Primary Call to Action"
+                      displayName={msg("fields.primaryCta", "Primary CTA")}
                       fieldId={primaryCta.data.cta.field}
                       constantValueEnabled={
                         primaryCta.data.cta.constantValueEnabled
@@ -968,7 +967,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                       />
                     </EntityField>
                     <EntityField
-                      displayName="Secondary Call to Action"
+                      displayName={msg("fields.secondaryCta", "Secondary CTA")}
                       fieldId={secondaryCta.data.cta.field}
                       constantValueEnabled={
                         secondaryCta.data.cta.constantValueEnabled
@@ -996,12 +995,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   style={cardSurfaceStyle}
                 >
                   <EntityField
-                    displayName="Hours Card Title"
+                    displayName={msg("fields.hoursCard", "Hours Card")}
                     fieldId={hoursTitle.field}
                     constantValueEnabled={hoursTitle.constantValueEnabled}
                   >
                     <h3
-                      className="font-serif text-[1.9rem] leading-none tracking-[-0.04em]"
+                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedHoursTitle}
@@ -1009,7 +1008,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   </EntityField>
                   {resolvedHours ? (
                     <EntityField
-                      displayName="Hours"
+                      displayName={msg("fields.hours", "Hours")}
                       fieldId={hours.field}
                       constantValueEnabled={hours.constantValueEnabled}
                     >
@@ -1040,12 +1039,12 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   style={cardSurfaceStyle}
                 >
                   <EntityField
-                    displayName="Services Card Title"
+                    displayName={msg("fields.servicesCard", "Services Card")}
                     fieldId={servicesTitle.field}
                     constantValueEnabled={servicesTitle.constantValueEnabled}
                   >
                     <h3
-                      className="font-serif text-[1.9rem] leading-none tracking-[-0.04em]"
+                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {normalizedServicesTitle}
@@ -1054,7 +1053,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                   <div className="mt-5 space-y-5 text-sm leading-7 md:text-base">
                     <div>
                       <EntityField
-                        displayName="Languages Subheading"
+                        displayName={msg("fields.languagesSubheading", "Languages Subheading")}
                         fieldId={languagesSubheading.field}
                         constantValueEnabled={
                           languagesSubheading.constantValueEnabled
@@ -1068,7 +1067,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         </h4>
                       </EntityField>
                       <EntityField
-                        displayName="Languages Text"
+                        displayName={msg("fields.languagesText", "Languages Text")}
                         fieldId={languagesText.field}
                         constantValueEnabled={
                           languagesText.constantValueEnabled
@@ -1081,7 +1080,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     </div>
                     <div className="border-t border-current/15 pt-5">
                       <EntityField
-                        displayName="Accessibility Subheading"
+                        displayName={msg("fields.accessibilitySubheading", "Accessibility Subheading")}
                         fieldId={accessibilitySubheading.field}
                         constantValueEnabled={
                           accessibilitySubheading.constantValueEnabled
@@ -1095,7 +1094,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         </h4>
                       </EntityField>
                       <EntityField
-                        displayName="Accessibility Text"
+                        displayName={msg("fields.accessibilityText", "Accessibility Text")}
                         fieldId={accessibilityText.field}
                         constantValueEnabled={
                           accessibilityText.constantValueEnabled
@@ -1111,7 +1110,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                     </div>
                     <div className="border-t border-current/15 pt-5">
                       <EntityField
-                        displayName="Services Subheading"
+                        displayName={msg("fields.servicesSubheading", "Services Subheading")}
                         fieldId={servicesSubheading.field}
                         constantValueEnabled={
                           servicesSubheading.constantValueEnabled
@@ -1125,7 +1124,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
                         </h4>
                       </EntityField>
                       <EntityField
-                        displayName="Services Items"
+                        displayName={msg("fields.servicesItems", "Services Items")}
                         fieldId={servicesItems.field}
                         constantValueEnabled={
                           servicesItems.constantValueEnabled

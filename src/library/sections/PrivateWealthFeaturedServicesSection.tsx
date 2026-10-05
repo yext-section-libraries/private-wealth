@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -32,7 +33,6 @@ import {
 } from "@yext/pages-components";
 import {
   aspectRatioOptions,
-  baseTypographyCss,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
@@ -368,14 +368,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
       cardStyles.image.styles?.borderRadius === "default"
         ? undefined
         : cardStyles.image.styles?.borderRadius,
-    overflow:
-      cardStyles.image.imageConstrain === "filled" ||
-      Boolean(
-        cardStyles.image.styles?.borderRadius &&
-        cardStyles.image.styles.borderRadius !== "default",
-      )
-        ? "hidden"
-        : undefined,
+    overflow: "hidden",
   };
   const imageStyle: React.CSSProperties = {
     display: "block",
@@ -390,28 +383,27 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center font-serif text-4xl tracking-[-0.04em] md:text-5xl"
+                  className="text-center tracking-[-0.04em]"
                   style={getTextStyles(heading.styles, heading.fontColor)}
                 >
                   {resolvedHeading}
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Service Cards"
+                displayName={msg("fields.serviceCards", "Service Cards")}
                 fieldId={cards.field}
                 constantValueEnabled={cards.constantValueEnabled}
               >
@@ -438,7 +430,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                       <article key={index} className="flex flex-col">
                         <div className="overflow-hidden">
                           {resolvedImage ? (
-                            <div style={imageWrapperStyle}>
+                            <div className="rounded-image-borderRadius" style={imageWrapperStyle}>
                               <Image
                                 className="h-full"
                                 image={resolvedImage}
@@ -483,7 +475,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
               </EntityField>
               <div className="mt-10 flex justify-center">
                 <EntityField
-                  displayName="Section Call to Action"
+                  displayName={msg("fields.sectionCta", "Section CTA")}
                   fieldId={sectionCta.data.cta.field}
                   constantValueEnabled={
                     sectionCta.data.cta.constantValueEnabled

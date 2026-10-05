@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
@@ -19,7 +20,7 @@ import {
   VisibilityWrapper,
   pt,
 } from "@yext/visual-editor";
-import { baseTypographyCss, type SectionProps } from "../shared/sectionHelpers";
+import { type SectionProps } from "../shared/sectionHelpers";
 
 type PrivateWealthBreadcrumbsProps = {
   includeCurrentLocation: boolean;
@@ -117,16 +118,15 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider
         name={`PrivateWealthBreadcrumbs${getAnalyticsScopeHash(id)}`}
       >
         <section
-          className="border-b border-black/10 px-6 py-4 md:px-8 lg:px-10"
+          className="border-b border-black/10 px-4 py-4 md:px-6"
           style={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
         >
           <nav aria-label={t("breadcrumb", "Breadcrumb")}>
-            <ol className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-y-1 text-xs uppercase tracking-[0.14em] md:text-sm">
+            <ol className="mx-auto flex max-w-pageSection-contentWidth flex-wrap items-center gap-y-1 text-xs uppercase tracking-[0.14em] md:text-sm">
               {visibleBreadcrumbs.map((breadcrumb, index) => {
                 const isCurrentLocation = index === breadcrumbs.length - 1;
                 const label =
@@ -153,7 +153,7 @@ const PrivateWealthBreadcrumbsComponent: PuckComponent<
                       <span aria-current="page">{label}</span>
                     ) : index === 0 ? (
                       <EntityField
-                        displayName="Root Label"
+                        displayName={msg("fields.rootLabel", "Root Label")}
                         fieldId={rootLabel.field}
                         constantValueEnabled={rootLabel.constantValueEnabled}
                       >

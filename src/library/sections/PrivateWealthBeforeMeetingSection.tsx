@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
@@ -21,7 +22,6 @@ import {
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
   aspectRatioOptions,
-  baseTypographyCss,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
@@ -211,13 +211,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
       image.styles?.borderRadius === "default"
         ? undefined
         : image.styles?.borderRadius,
-    overflow:
-      image.imageConstrain === "filled" ||
-      Boolean(
-        image.styles?.borderRadius && image.styles.borderRadius !== "default",
-      )
-        ? "hidden"
-        : undefined,
+    overflow: "hidden" as const,
   };
   const imageStyle = {
     display: "block",
@@ -234,22 +228,21 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto grid max-w-[1600px] items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
+            <div className="mx-auto grid max-w-pageSection-contentWidth items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
               <div className="order-1 rounded-lg p-4 md:order-2 md:p-6">
                 {resolvedImage ? (
                   <EntityField
-                    displayName="Image"
+                    displayName={msg("fields.image", "Image")}
                     fieldId={image.image.field}
                     constantValueEnabled={image.image.constantValueEnabled}
                   >
-                    <div style={imageWrapperStyle}>
+                    <div className="rounded-image-borderRadius" style={imageWrapperStyle}>
                       <Image
                         className="h-full"
                         image={resolvedImage}
@@ -261,12 +254,12 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
               </div>
               <div className="order-2 text-center md:order-1">
                 <EntityField
-                  displayName="Heading"
+                  displayName={msg("fields.heading", "Heading")}
                   fieldId={heading.text.field}
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="font-serif text-4xl tracking-[-0.04em] md:text-5xl"
+                    className="tracking-[-0.04em]"
                     style={getTextStyles(
                       heading.styles,
                       heading.fontColor,
@@ -278,7 +271,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
                   </h2>
                 </EntityField>
                 <EntityField
-                  displayName="Body"
+                  displayName={msg("fields.body", "Body")}
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
@@ -296,7 +289,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
                   {links.map((link, index) => (
                     <EntityField
                       key={index}
-                      displayName={`Link ${index + 1}`}
+                      displayName={`${msg("fields.link", "Link")} ${index + 1}`}
                       fieldId={link.cta.data.cta.field}
                       constantValueEnabled={
                         link.cta.data.cta.constantValueEnabled

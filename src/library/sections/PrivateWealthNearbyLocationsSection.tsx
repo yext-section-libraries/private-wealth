@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { useTranslation } from "react-i18next";
@@ -33,7 +34,6 @@ import {
 import type { PuckComponent } from "@puckeditor/core";
 import type { CSSProperties } from "react";
 import {
-  baseTypographyCss,
   createDefaultStyledTextValue,
   getTextStyles,
   type SectionProps,
@@ -397,15 +397,14 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
         isEditing={puck.isEditing}
         liveVisibility={section.visibleOnLivePage}
       >
-        <style>{baseTypographyCss}</style>
-        <AnalyticsScopeProvider name={scopeName}>
+          <AnalyticsScopeProvider name={scopeName}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
@@ -418,8 +417,11 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
               </EntityField>
               <p className="mt-10 text-center text-sm opacity-60 md:text-base">
                 {nearbyLocationsStatus === "pending"
-                  ? "Loading nearby locations"
-                  : "No nearby locations found for this location"}
+                  ? t("loadingNearbyLocations", "Loading nearby locations")
+                  : t(
+                      "noNearbyLocationsFoundForThisLocation",
+                      "No nearby locations found for this location",
+                    )}
               </p>
             </div>
           </section>
@@ -433,10 +435,9 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <section
-          className="px-6 py-16 md:px-8 lg:px-10"
+          className="px-4 py-pageSection-verticalPadding md:px-6"
           style={sectionSurfaceStyle}
         >
           <style>{`
@@ -452,9 +453,9 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
               object-position: center;
             }
           `}</style>
-          <div className="mx-auto max-w-[1600px]">
+          <div className="mx-auto max-w-pageSection-contentWidth">
             <EntityField
-              displayName="Heading"
+              displayName={msg("fields.heading", "Heading")}
               fieldId={heading.text.field}
               constantValueEnabled={heading.text.constantValueEnabled}
             >
@@ -467,7 +468,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
             </EntityField>
             <div className="yext-private-wealth-nearby-map relative mt-10 overflow-hidden rounded-lg border border-current/15 bg-white">
               <EntityField
-                displayName="Map Coordinate"
+                displayName={msg("fields.coordinates", "Coordinates")}
                 fieldId={map.coordinate.field}
                 constantValueEnabled={map.coordinate.constantValueEnabled}
               >

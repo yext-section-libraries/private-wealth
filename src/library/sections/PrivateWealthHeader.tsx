@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -41,7 +42,6 @@ import {
 } from "@yext/visual-editor";
 import {
   aspectRatioOptions,
-  baseTypographyCss,
 } from "../shared/sectionHelpers";
 
 type SharedHeaderVariant =
@@ -786,11 +786,11 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
 
     return (
       <EntityField
-        displayName="Utility Icon"
+        displayName={msg("fields.icon", "Icon")}
         fieldId={iconImageProps.image.field}
         constantValueEnabled={iconImageProps.image.constantValueEnabled}
       >
-        <div style={wrapperStyle}>
+        <div className="rounded-image-borderRadius" style={wrapperStyle}>
           <img
             alt=""
             src={iconUrl}
@@ -837,7 +837,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
           {ctaItems.map((item, index) => (
             <EntityField
               key={`desktop-cta-${index}`}
-              displayName={`Header Call to Action ${index + 1}`}
+              displayName={`${msg("fields.callToActions", "Call to Actions")} ${index + 1}`}
               fieldId={item.cta.data.cta.field}
               constantValueEnabled={item.cta.data.cta.constantValueEnabled}
             >
@@ -893,11 +893,11 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
 
     const logoContent = (
       <EntityField
-        displayName="Logo Image"
+        displayName={msg("fields.logoImage", "Logo Image")}
         fieldId={props.logoImage.image.field}
         constantValueEnabled={props.logoImage.image.constantValueEnabled}
       >
-        <div style={logoWrapperStyle}>
+        <div className="rounded-image-borderRadius" style={logoWrapperStyle}>
           <Image
             image={
               resolvedLogoImage as
@@ -912,7 +912,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
 
     return logoUrl ? (
       <EntityField
-        displayName="Logo Link"
+        displayName={msg("fields.link", "Link")}
         fieldId={props.logoImage.url.field}
         constantValueEnabled={props.logoImage.url.constantValueEnabled}
       >
@@ -923,7 +923,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
           }}
           eventName="headerLogo"
           className="inline-flex transition-opacity hover:opacity-80"
-          aria-label="Logo"
+          aria-label={t("logo", "Logo")}
         >
           {logoContent}
         </Link>
@@ -1006,7 +1006,6 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
       liveVisibility={props.section.visibleOnLivePage}
       isEditing={props.puck.isEditing}
     >
-      <style>{baseTypographyCss}</style>
       <Background
         as="header"
         background={props.section.backgroundColor}
@@ -1025,7 +1024,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
               <EntityField
-                displayName="Header Call to Action 1"
+                displayName={msg("fields.callToActions", "Call to Actions")}
                 fieldId={topBarCtaItem.cta.data.cta.field}
                 constantValueEnabled={
                   topBarCtaItem.cta.data.cta.constantValueEnabled
@@ -1051,7 +1050,9 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
             }}
             aria-expanded={menuOpen}
             aria-label={
-              menuOpen ? "Close navigation menu" : "Open navigation menu"
+              menuOpen
+                ? t("closeNavigationMenu", "Close navigation menu")
+                : t("openNavigationMenu", "Open navigation menu")
             }
             className="inline-flex h-10 w-10 items-center justify-center rounded-full"
             style={{
@@ -1097,7 +1098,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
                       {drawerCtaItems.map((item, index) => (
                         <EntityField
                           key={`tablet-cta-${index}`}
-                          displayName={`Header Call to Action ${index + 2}`}
+                          displayName={`${msg("fields.callToActions", "Call to Actions")} ${index + 2}`}
                           fieldId={item.cta.data.cta.field}
                           constantValueEnabled={
                             item.cta.data.cta.constantValueEnabled
@@ -1118,7 +1119,7 @@ const PrivateWealthHeaderComponent: PuckComponent<PrivateWealthHeaderProps> = (
                       {mobileDrawerCtaItems.map((item, index) => (
                         <EntityField
                           key={`mobile-cta-${index}`}
-                          displayName={`Header Call to Action ${index + 1}`}
+                          displayName={`${msg("fields.callToActions", "Call to Actions")} ${index + 1}`}
                           fieldId={item.cta.data.cta.field}
                           constantValueEnabled={
                             item.cta.data.cta.constantValueEnabled
