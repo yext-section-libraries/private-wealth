@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -10,9 +11,6 @@ import {
   EntityField,
   getDefaultRTF,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
-  getSurfaceColorStyle,
-  isDarkColor,
   Image,
   resolveComponentData,
   useDocument,
@@ -32,11 +30,12 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
-  baseTypographyCss,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type ImageStyleProps,
@@ -390,7 +389,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -398,12 +397,8 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
     members as unknown as typeof teamMembersSource.value,
     streamDocument,
   );
-  const cardSurfaceStyle = getSurfaceColorStyle(
+  const cardSurfaceStyle = getContrastSurfaceStyle(
     section.cardBackgroundColor,
-    streamDocument,
-  );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
     streamDocument,
   );
   const resolveLabel = (label: YextEntityField<TranslatableString>) => {
@@ -418,25 +413,33 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
   const nameStyle = getTextStyles(
     cardStyles.name.styles,
     cardStyles.name.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const positionStyle = getTextStyles(
     cardStyles.position.styles,
     cardStyles.position.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const labelStyle = getTextStyles(
     cardStyles.labels.styles,
     cardStyles.labels.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
   const valueStyle = getTextStyles(
     cardStyles.values.styles,
     cardStyles.values.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
   );
-  const richTextValueStyle = {
-    ...cardStyles.values.styles,
-    color:
-      getThemeColorCssValue(cardStyles.values.fontColor) ??
-      (hasDarkBackground ? "#fff" : "#000"),
-  };
+  const richTextValueStyle = getRichTextStyleOverrides(
+    cardStyles.values.styles,
+    cardStyles.values.fontColor,
+    section.cardBackgroundColor,
+    streamDocument,
+  );
   const imageWrapperStyle: React.CSSProperties = {
     aspectRatio:
       cardStyles.image.aspectRatio > 0
@@ -446,14 +449,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
       cardStyles.image.styles?.borderRadius === "default"
         ? undefined
         : cardStyles.image.styles?.borderRadius,
-    overflow:
-      cardStyles.image.imageConstrain === "filled" ||
-      Boolean(
-        cardStyles.image.styles?.borderRadius &&
-        cardStyles.image.styles.borderRadius !== "default",
-      )
-        ? "hidden"
-        : undefined,
+    overflow: "hidden",
   };
   const imageStyle: React.CSSProperties = {
     display: "block",
@@ -468,28 +464,32 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center font-serif text-4xl tracking-[-0.04em] md:text-5xl"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  className="text-center"
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Team Members"
+                displayName={msg("fields.teamMembers", "Team Members")}
                 fieldId={members.field}
                 constantValueEnabled={members.constantValueEnabled}
               >
@@ -564,7 +564,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                         >
                           <div className="mx-auto w-[140px] shrink-0 overflow-hidden md:mx-0">
                             {resolvedImage ? (
-                              <div style={imageWrapperStyle}>
+                              <div className="rounded-image-borderRadius" style={imageWrapperStyle}>
                                 <Image
                                   className="h-full"
                                   image={resolvedImage}
@@ -575,28 +575,26 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                           </div>
                           <div className="flex-1 text-center md:text-left">
                             <h3
-                              className="font-serif text-[1.9rem] leading-none tracking-[-0.04em]"
                               style={nameStyle}
                             >
                               {resolvedName}
                             </h3>
                             <p
-                              className="mt-3 text-sm font-semibold md:text-base"
+                              className="mt-3"
                               style={positionStyle}
                             >
                               {resolvedRole}
                             </p>
-                            <div className="mt-4 space-y-2 text-sm leading-7 opacity-70">
+                            <div className="mt-4 space-y-2">
                               <p>
                                 <EntityField
-                                  displayName="Credentials Label"
+                                  displayName={msg("fields.credentialsLabel", "Credentials Label")}
                                   fieldId={labels.credentials.field}
                                   constantValueEnabled={
                                     labels.credentials.constantValueEnabled
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.credentials}:
@@ -608,14 +606,13 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                               </p>
                               <p>
                                 <EntityField
-                                  displayName="Licenses Label"
+                                  displayName={msg("fields.licensesLabel", "Licenses Label")}
                                   fieldId={labels.licenses.field}
                                   constantValueEnabled={
                                     labels.licenses.constantValueEnabled
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.licenses}:
@@ -627,14 +624,13 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                               </p>
                               <div>
                                 <EntityField
-                                  displayName="Specialties Label"
+                                  displayName={msg("fields.specialtiesLabel", "Specialties Label")}
                                   fieldId={labels.specialties.field}
                                   constantValueEnabled={
                                     labels.specialties.constantValueEnabled
                                   }
                                 >
                                   <strong
-                                    className="font-semibold"
                                     style={labelStyle}
                                   >
                                     {resolvedLabels.specialties}:
@@ -650,12 +646,8 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
                               <ComprehensiveCTA
                                 className={
                                   member.cta.styles.variant === "link"
-                                    ? `mt-5 max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                        hasDarkBackground
-                                          ? "border-white/40 hover:border-white"
-                                          : "border-current/15 hover:border-current"
-                                      }`
-                                    : "mt-5 max-w-full w-fit whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90"
+                                    ? "mt-5 max-w-full w-fit whitespace-normal break-words"
+                                    : "mt-5 max-w-full w-fit whitespace-normal break-words "
                                 }
                                 eventName={`card${index}`}
                                 value={
@@ -731,7 +723,7 @@ export const PrivateWealthMeetTeamSection: YextComponentConfig<PrivateWealthMeet
         image: {
           aspectRatio: 1,
           imageConstrain: "filled",
-          styles: createDefaultStyledImageValue("999px"),
+          styles: createDefaultStyledImageValue(),
         },
       },
       members: teamMembersSource.defaultValue,

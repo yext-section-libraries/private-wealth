@@ -2,6 +2,7 @@ import * as React from "react";
 import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
   MaybeRTF,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   isDarkColor,
   type ComprehensiveCTAValue,
@@ -64,22 +65,6 @@ export const aspectRatioOptions = [
   { label: "2:3", value: 0.67 },
 ];
 
-export const bodyTypographyCss = `
-p { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-li { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
-`;
-
-export const headingTypographyCss = `
-h1, h1[class] { font-family: var(--fontFamily-h1-fontFamily); font-size: var(--fontSize-h1-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h1-fontWeight); font-style: var(--fontStyle-h1-fontStyle); text-transform: var(--textTransform-h1-textTransform); }
-h2, h2[class] { font-family: var(--fontFamily-h2-fontFamily); font-size: var(--fontSize-h2-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h2-fontWeight); font-style: var(--fontStyle-h2-fontStyle); text-transform: var(--textTransform-h2-textTransform); }
-h3, h3[class] { font-family: var(--fontFamily-h3-fontFamily); font-size: var(--fontSize-h3-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h3-fontWeight); font-style: var(--fontStyle-h3-fontStyle); text-transform: var(--textTransform-h3-textTransform); }
-h4, h4[class] { font-family: var(--fontFamily-h4-fontFamily); font-size: var(--fontSize-h4-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h4-fontWeight); font-style: var(--fontStyle-h4-fontStyle); text-transform: var(--textTransform-h4-textTransform); }
-h5, h5[class] { font-family: var(--fontFamily-h5-fontFamily); font-size: var(--fontSize-h5-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h5-fontWeight); font-style: var(--fontStyle-h5-fontStyle); text-transform: var(--textTransform-h5-textTransform); }
-h6, h6[class] { font-family: var(--fontFamily-h6-fontFamily); font-size: var(--fontSize-h6-fontSize); line-height: 1.2; font-weight: var(--fontWeight-h6-fontWeight); font-style: var(--fontStyle-h6-fontStyle); text-transform: var(--textTransform-h6-textTransform); }
-`;
-
-export const baseTypographyCss = `${bodyTypographyCss}${headingTypographyCss}`;
-
 export const createDefaultStyledTextValue = (): StyledTextValue => ({
   fontFamily: "default",
   fontSize: "default",
@@ -107,14 +92,8 @@ export const createDefaultComprehensiveCTA = (
   const {
     link = "#",
     variant = "primary",
-    color =
-      variant === "link"
-        ? undefined
-        : {
-            selectedColor: "palette-tertiary",
-            contrastingColor: "palette-tertiary-contrast",
-          },
-    buttonBorderRadius = "lg",
+    color,
+    buttonBorderRadius = "default",
     includeCaret = "default",
   } = options;
 
@@ -161,6 +140,7 @@ export const getTextStyles = (
 ): React.CSSProperties => ({
   color:
     getThemeColorCssValue(fontColor) ??
+    getThemeColorCssValue(styles.color) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
         ? "#fff"
@@ -174,6 +154,14 @@ export const getTextStyles = (
     styles.textTransform === "default" ? undefined : styles.textTransform,
 });
 
+export const getContrastSurfaceStyle = (
+  surfaceColor: ThemeColor,
+  streamDocument?: StreamDocument,
+): React.CSSProperties => ({
+  ...getSurfaceColorStyle(surfaceColor, streamDocument),
+  color: isDarkColor(surfaceColor, streamDocument) ? "#fff" : "#000",
+});
+
 export const getRichTextStyleOverrides = (
   styles: StyledTextValue,
   fontColor?: ThemeColor,
@@ -182,11 +170,12 @@ export const getRichTextStyleOverrides = (
 ): NonNullable<MaybeRTFProps["richTextStyleOverrides"]> => ({
   ...styles,
   color:
-    getThemeColorCssValue(fontColor) ??
+    (getThemeColorCssValue(fontColor) ? fontColor : undefined) ??
+    (getThemeColorCssValue(styles.color) ? styles.color : undefined) ??
     (surfaceColor
       ? isDarkColor(surfaceColor, streamDocument)
-        ? "#fff"
-        : "#000"
+        ? "white"
+        : "black"
       : undefined),
 });
 
@@ -194,23 +183,102 @@ export const renderResolvedRichText = (
   value: unknown,
   richTextStyleOverrides?: MaybeRTFProps["richTextStyleOverrides"],
 ): React.ReactNode => {
+  const textStyles = Object.fromEntries(
+    Object.entries(richTextStyleOverrides ?? {}).filter(
+      ([property, style]) => property !== "color" && style !== "default" && style !== undefined,
+    ),
+  );
+  const bodyVariables = Object.fromEntries(
+    Object.entries(textStyles).map(([property, style]) => [
+      `--${property}-body-${property}`,
+      style,
+    ]),
+  );
+  const color = richTextStyleOverrides?.color;
+  const resolvedColor =
+    getThemeColorCssValue(color) ?? (typeof color === "string" ? color : undefined);
+  const wrapperStyle = {
+    ...textStyles,
+    ...bodyVariables,
+    ...(resolvedColor ? { color: resolvedColor } : {}),
+  };
+
+  // Generated rich-text defaults include inline black text. Remove that
+  // boilerplate color on dark surfaces while preserving colors edited in RTF.
+  const renderData = (data: RichText | string | undefined) =>
+    typeof data === "object" &&
+    typeof data.html === "string" &&
+    (typeof data.json !== "string" ||
+      !/"style":"[^"]*color\s*:/i.test(data.json)) &&
+    color === "white"
+      ? {
+          ...data,
+          html: data.html.replace(
+            /style="([^"]*)"/g,
+            (attribute, declarations: string) => {
+              if (!/font-size:\s*14\.67px/i.test(declarations)) {
+                return attribute;
+              }
+              const styles = declarations
+                .split(";")
+                .filter(
+                  (declaration) =>
+                    !/^\s*color\s*:\s*(?:rgb\(0,\s*0,\s*0\)|#000000|#000)\s*$/i.test(
+                      declaration,
+                    ),
+                )
+                .join(";");
+              return styles.trim() ? `style="${styles}"` : "";
+            },
+          ),
+        }
+      : data;
+
   if (React.isValidElement(value)) {
     if (!richTextStyleOverrides) {
       return value;
     }
+    if (value.type === MaybeRTF) {
+      const element = value as React.ReactElement<MaybeRTFProps>;
+      return React.cloneElement(element, {
+        data: renderData(element.props.data),
+        richTextStyleOverrides: {
+          ...element.props.richTextStyleOverrides,
+          ...textStyles,
+          color,
+        },
+        style: { ...element.props.style, ...wrapperStyle },
+      });
+    }
 
-    const resolvedColor = getThemeColorCssValue(richTextStyleOverrides.color);
-    const { color: _color, ...styleOverrides } = richTextStyleOverrides;
     const element = value as React.ReactElement<{
       style?: React.CSSProperties;
+      children?: React.ReactNode;
     }>;
+    const child = element.props.children;
+    const richTextChild = React.isValidElement(child) &&
+      (child.type === MaybeRTF ||
+        (typeof child.props.className === "string" &&
+          child.props.className.includes("rtf-wrapper")));
 
     return React.cloneElement(element, {
-      style: {
-        ...element.props.style,
-        ...styleOverrides,
-        ...(resolvedColor ? { color: resolvedColor } : {}),
-      },
+      style: { ...element.props.style, ...wrapperStyle },
+      children: richTextChild
+        ? child.type === MaybeRTF
+          ? React.cloneElement(child as React.ReactElement<MaybeRTFProps>, {
+              data: renderData(child.props.data),
+              richTextStyleOverrides: {
+                ...child.props.richTextStyleOverrides,
+                ...textStyles,
+                color,
+              },
+              style: { ...child.props.style, ...wrapperStyle },
+            })
+          : React.cloneElement(
+              child as React.ReactElement<{ style?: React.CSSProperties }>,
+              { style: { ...child.props.style, ...wrapperStyle } },
+            )
+        : child,
     });
   }
 
@@ -222,8 +290,9 @@ export const renderResolvedRichText = (
 
   return (
     <MaybeRTF
-      data={data}
-      richTextStyleOverrides={richTextStyleOverrides}
+      data={renderData(data)}
+      richTextStyleOverrides={{ ...textStyles, color }}
+      style={wrapperStyle}
     />
   );
 };

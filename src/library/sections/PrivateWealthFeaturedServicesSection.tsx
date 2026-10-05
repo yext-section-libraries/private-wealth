@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -9,9 +10,6 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getThemeColorCssValue,
-  getSurfaceColorStyle,
-  isDarkColor,
   getDefaultRTF,
   Image,
   resolveComponentData,
@@ -31,11 +29,12 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
-  baseTypographyCss,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type ImageStyleProps,
@@ -337,7 +336,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -345,20 +344,18 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
     cards as unknown as typeof featuredServicesSource.value,
     streamDocument,
   );
-  const hasDarkBackground = isDarkColor(
-    section.backgroundColor,
-    streamDocument,
-  );
   const cardTitleStyle = getTextStyles(
     cardStyles.title.styles,
     cardStyles.title.fontColor,
+    section.backgroundColor,
+    streamDocument,
   );
-  const cardDescriptionStyleOverrides = {
-    ...cardStyles.description.styles,
-    color:
-      getThemeColorCssValue(cardStyles.description.fontColor) ??
-      (isDarkColor(section.backgroundColor, streamDocument) ? "#fff" : "#000"),
-  };
+  const cardDescriptionStyleOverrides = getRichTextStyleOverrides(
+    cardStyles.description.styles,
+    cardStyles.description.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
   const imageWrapperStyle: React.CSSProperties = {
     aspectRatio:
       cardStyles.image.aspectRatio > 0
@@ -368,14 +365,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
       cardStyles.image.styles?.borderRadius === "default"
         ? undefined
         : cardStyles.image.styles?.borderRadius,
-    overflow:
-      cardStyles.image.imageConstrain === "filled" ||
-      Boolean(
-        cardStyles.image.styles?.borderRadius &&
-        cardStyles.image.styles.borderRadius !== "default",
-      )
-        ? "hidden"
-        : undefined,
+    overflow: "hidden",
   };
   const imageStyle: React.CSSProperties = {
     display: "block",
@@ -390,28 +380,32 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center font-serif text-4xl tracking-[-0.04em] md:text-5xl"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  className="text-center"
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Service Cards"
+                displayName={msg("fields.serviceCards", "Service Cards")}
                 fieldId={cards.field}
                 constantValueEnabled={cards.constantValueEnabled}
               >
@@ -438,7 +432,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                       <article key={index} className="flex flex-col">
                         <div className="overflow-hidden">
                           {resolvedImage ? (
-                            <div style={imageWrapperStyle}>
+                            <div className="rounded-image-borderRadius" style={imageWrapperStyle}>
                               <Image
                                 className="h-full"
                                 image={resolvedImage}
@@ -448,12 +442,12 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                           ) : null}
                         </div>
                         <h3
-                          className="mt-4 leading-none tracking-[-0.04em]"
+                          className="mt-4"
                           style={cardTitleStyle}
                         >
                           {resolvedTitle}
                         </h3>
-                        <div className="mt-3 leading-7 opacity-70">
+                        <div className="mt-3">
                           {renderResolvedRichText(
                             resolvedDescriptionValue,
                             cardDescriptionStyleOverrides,
@@ -463,12 +457,8 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                           <ComprehensiveCTA
                             className={
                               card.cta.styles.variant === "link"
-                                ? `mt-4 max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                    hasDarkBackground
-                                      ? "border-white/40 hover:border-white"
-                                      : "border-current/15 hover:border-current"
-                                  }`
-                                : "mt-4 max-w-full w-fit whitespace-normal break-words px-6 py-3 text-center transition hover:opacity-90"
+                                ? "mt-4 max-w-full w-fit whitespace-normal break-words"
+                                : "mt-4 max-w-full w-fit whitespace-normal break-words "
                             }
                             eventName={`card${index}`}
                             value={
@@ -483,7 +473,7 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
               </EntityField>
               <div className="mt-10 flex justify-center">
                 <EntityField
-                  displayName="Section Call to Action"
+                  displayName={msg("fields.sectionCta", "Section CTA")}
                   fieldId={sectionCta.data.cta.field}
                   constantValueEnabled={
                     sectionCta.data.cta.constantValueEnabled
@@ -492,12 +482,8 @@ const PrivateWealthFeaturedServicesSectionComponent: PuckComponent<
                   <ComprehensiveCTA
                     className={
                       sectionCta.styles.variant === "link"
-                        ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                            hasDarkBackground
-                              ? "border-white/40 hover:border-white"
-                              : "border-current/15 hover:border-current"
-                          }`
-                        : "max-w-full whitespace-normal break-words px-8 py-3 text-center transition hover:opacity-90"
+                        ? "max-w-full w-fit whitespace-normal break-words"
+                        : "max-w-full whitespace-normal break-words "
                     }
                     eventName="primaryCta"
                     value={sectionCta as Partial<ComprehensiveCTAValue>}
@@ -549,10 +535,6 @@ export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWe
       cards: featuredServicesSource.defaultValue,
       sectionCta: createDefaultComprehensiveCTA("Explore Services", {
         variant: "primary",
-        color: {
-          selectedColor: "palette-tertiary",
-          contrastingColor: "palette-tertiary-contrast",
-        },
       }),
       section: {
         visibleOnLivePage: true,

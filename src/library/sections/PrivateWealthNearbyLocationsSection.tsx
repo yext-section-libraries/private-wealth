@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { useTranslation } from "react-i18next";
@@ -5,9 +6,7 @@ import {
   msg,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
-  isDarkColor,
   mapboxStaticMapStyleOptions,
   MapboxStaticMapComponent,
   mergeMeta,
@@ -33,7 +32,7 @@ import {
 import type { PuckComponent } from "@puckeditor/core";
 import type { CSSProperties } from "react";
 import {
-  baseTypographyCss,
+  getContrastSurfaceStyle,
   createDefaultStyledTextValue,
   getTextStyles,
   type SectionProps,
@@ -318,11 +317,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
       limit,
       enabled: enableNearbyLocations,
     });
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    section.backgroundColor,
-    streamDocument,
-  );
-  const hasDarkBackground = isDarkColor(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -344,14 +339,11 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
     section.backgroundColor,
     streamDocument,
   );
-  const linkUnderlineClassName = `border-b pb-1 no-underline transition hover:no-underline ${
-    hasDarkBackground
-      ? "border-white/40 hover:border-white"
-      : "border-current/15 hover:border-current"
-  }`;
+  const linkTypographyClassName =
+    "font-link-fontFamily text-link-fontSize font-link-fontWeight tracking-link-letterSpacing";
   const getDirectionsLinkClassName =
     cardStyles.getDirectionsLink.variant === "link"
-      ? `inline-flex max-w-full w-fit whitespace-normal break-words font-link-fontFamily text-link-fontSize font-link-fontWeight tracking-link-letterSpacing ${linkUnderlineClassName}`
+      ? `inline-flex max-w-full w-fit whitespace-normal break-words ${linkTypographyClassName}`
       : cardStyles.getDirectionsLink.variant === "secondary"
         ? "inline-flex max-w-full items-center justify-center whitespace-normal break-words rounded-button-borderRadius border-2 border-current bg-transparent px-6 py-3 text-center font-button-fontFamily text-button-fontSize font-button-fontWeight tracking-button-letterSpacing"
         : "inline-flex max-w-full items-center justify-center whitespace-normal break-words rounded-button-borderRadius border-2 border-palette-primary bg-palette-primary px-6 py-3 text-center font-button-fontFamily text-button-fontSize font-button-fontWeight tracking-button-letterSpacing text-palette-primary-contrast";
@@ -397,29 +389,31 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
         isEditing={puck.isEditing}
         liveVisibility={section.visibleOnLivePage}
       >
-        <style>{baseTypographyCss}</style>
-        <AnalyticsScopeProvider name={scopeName}>
+          <AnalyticsScopeProvider name={scopeName}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[1600px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center tracking-[-0.04em]"
+                  className="text-center"
                   style={headingStyle}
                 >
                   {resolvedHeading}
                 </h2>
               </EntityField>
-              <p className="mt-10 text-center text-sm opacity-60 md:text-base">
+              <p className="mt-10 text-center">
                 {nearbyLocationsStatus === "pending"
-                  ? "Loading nearby locations"
-                  : "No nearby locations found for this location"}
+                  ? t("loadingNearbyLocations", "Loading nearby locations")
+                  : t(
+                      "noNearbyLocationsFoundForThisLocation",
+                      "No nearby locations found for this location",
+                    )}
               </p>
             </div>
           </section>
@@ -433,10 +427,9 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <section
-          className="px-6 py-16 md:px-8 lg:px-10"
+          className="px-4 py-pageSection-verticalPadding md:px-6"
           style={sectionSurfaceStyle}
         >
           <style>{`
@@ -452,22 +445,22 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
               object-position: center;
             }
           `}</style>
-          <div className="mx-auto max-w-[1600px]">
+          <div className="mx-auto max-w-pageSection-contentWidth">
             <EntityField
-              displayName="Heading"
+              displayName={msg("fields.heading", "Heading")}
               fieldId={heading.text.field}
               constantValueEnabled={heading.text.constantValueEnabled}
             >
               <h2
-                className="text-center tracking-[-0.04em]"
+                className="text-center"
                 style={headingStyle}
               >
                 {resolvedHeading}
               </h2>
             </EntityField>
-            <div className="yext-private-wealth-nearby-map relative mt-10 overflow-hidden rounded-lg border border-current/15 bg-white">
+            <div className="yext-private-wealth-nearby-map relative mt-10 overflow-hidden rounded-lg border border-current/15">
               <EntityField
-                displayName="Map Coordinate"
+                displayName={msg("fields.coordinates", "Coordinates")}
                 fieldId={map.coordinate.field}
                 constantValueEnabled={map.coordinate.constantValueEnabled}
               >
@@ -495,12 +488,11 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
                 ) => (
                   <article key={key} className="space-y-3">
                     <h3
-                      className="leading-none tracking-[-0.04em]"
                       style={cardTitleStyle}
                     >
                       {resolvedUrl ? (
                         <Link
-                          className={`inline-flex max-w-full w-fit whitespace-normal break-words ${linkUnderlineClassName}`}
+                          className={`inline-flex max-w-full w-fit whitespace-normal break-words ${linkTypographyClassName}`}
                           href={resolvedUrl}
                         >
                           {locationData.name}
@@ -522,7 +514,6 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
                       <p style={cardBodyStyle}>
                         {cardStyles.phone.includeHyperlink && telDigits ? (
                           <Link
-                            className="underline hover:no-underline"
                             cta={{
                               link: telDigits,
                               linkType: "PHONE",

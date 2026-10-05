@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -9,10 +10,8 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getDefaultRTF,
   Image,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -28,8 +27,8 @@ import {
   type StatusParams,
 } from "@yext/pages-components";
 import {
+  getContrastSurfaceStyle,
   aspectRatioOptions,
-  baseTypographyCss,
   createDefaultComprehensiveCTA,
   createDefaultStyledImageValue,
   createDefaultStyledTextValue,
@@ -260,11 +259,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
   const resolvedHours = resolveComponentData(hours, locale, streamDocument);
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    section.backgroundColor,
-    streamDocument,
-  );
-  const hasDarkBackground = isDarkColor(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -274,14 +269,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
       heroImage.styles?.borderRadius === "default"
         ? undefined
         : heroImage.styles?.borderRadius,
-    overflow:
-      heroImage.imageConstrain === "filled" ||
-      Boolean(
-        heroImage.styles?.borderRadius &&
-        heroImage.styles.borderRadius !== "default",
-      )
-        ? "hidden"
-        : undefined,
+    overflow: "hidden" as const,
   };
   const imageStyle = {
     display: "block",
@@ -342,7 +330,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
         : "";
 
     return (
-      <div className="flex items-center gap-1 text-sm font-semibold">
+      <div className="flex items-center gap-1">
         <span
           aria-hidden="true"
           className="h-[0.7rem] w-[0.7rem] shrink-0 rounded-full mr-1"
@@ -373,22 +361,21 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-10 md:px-8 md:py-14 lg:px-10 lg:py-16"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto grid max-w-[1600px] items-center gap-10 md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:gap-12 lg:gap-16">
+            <div className="mx-auto grid max-w-pageSection-contentWidth items-center gap-10 md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:gap-12 lg:gap-16">
               <div className="order-2 flex flex-col items-center text-center md:order-1">
                 <EntityField
-                  displayName="Heading"
+                  displayName={msg("fields.heading", "Heading")}
                   fieldId={heading.text.field}
                   constantValueEnabled={heading.text.constantValueEnabled}
                 >
                   <h2
-                    className="max-w-[12ch] font-serif text-[2.4rem] leading-[0.95] tracking-[-0.05em] md:text-[3.25rem] lg:text-[4.25rem]"
+                    className="max-w-[12ch]"
                     style={getTextStyles(
                       heading.styles,
                       heading.fontColor,
@@ -401,7 +388,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                 </EntityField>
                 {resolvedHours && hoursStyles.showCurrentStatus ? (
                   <EntityField
-                    displayName="Hours"
+                    displayName={msg("fields.hours", "Hours")}
                     fieldId={hours.field}
                     constantValueEnabled={hours.constantValueEnabled}
                   >
@@ -417,15 +404,15 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     </div>
                   </EntityField>
                 ) : null}
-                <div aria-hidden="true" className="mt-5 text-xl leading-none">
+                <div aria-hidden="true" className="mt-5 text-xl">
                   ✦
                 </div>
                 <EntityField
-                  displayName="Body"
+                  displayName={msg("fields.body", "Body")}
                   fieldId={body.text.field}
                   constantValueEnabled={body.text.constantValueEnabled}
                 >
-                  <div className="mt-5 max-w-[44ch] text-sm leading-7 md:text-base">
+                  <div className="mt-5 max-w-[44ch]">
                     {renderResolvedRichText(
                       resolvedBodyValue,
                       bodyRichTextStyleOverrides,
@@ -434,7 +421,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                 </EntityField>
                 <div className="mt-7 flex flex-col items-center justify-center gap-3">
                   <EntityField
-                    displayName="Primary Call to Action"
+                    displayName={msg("fields.primaryCta", "Primary CTA")}
                     fieldId={primaryCta.data.cta.field}
                     constantValueEnabled={
                       primaryCta.data.cta.constantValueEnabled
@@ -443,19 +430,15 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         primaryCta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-7 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="primaryCta"
                       value={primaryCta as Partial<ComprehensiveCTAValue>}
                     />
                   </EntityField>
                   <EntityField
-                    displayName="Secondary Call to Action"
+                    displayName={msg("fields.secondaryCta", "Secondary CTA")}
                     fieldId={secondaryCta.data.cta.field}
                     constantValueEnabled={
                       secondaryCta.data.cta.constantValueEnabled
@@ -464,12 +447,8 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
                     <ComprehensiveCTA
                       className={
                         secondaryCta.styles.variant === "link"
-                          ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                              hasDarkBackground
-                                ? "border-white/40 hover:border-white"
-                                : "border-current/15 hover:border-current"
-                            }`
-                          : "max-w-full whitespace-normal break-words px-7 py-3 text-center transition hover:opacity-90"
+                          ? "max-w-full w-fit whitespace-normal break-words"
+                          : "max-w-full whitespace-normal break-words "
                       }
                       eventName="secondaryCta"
                       value={secondaryCta as Partial<ComprehensiveCTAValue>}
@@ -481,11 +460,11 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
               <div className="order-1 mx-auto max-w-[620px] md:order-2 md:max-w-none">
                 {resolvedHeroImage ? (
                   <EntityField
-                    displayName="Hero Image"
+                    displayName={msg("fields.heroImage", "Hero Image")}
                     fieldId={heroImage.image.field}
                     constantValueEnabled={heroImage.image.constantValueEnabled}
                   >
-                    <div style={imageWrapperStyle}>
+                    <div className="rounded-image-borderRadius" style={imageWrapperStyle}>
                       <Image
                         className="h-full"
                         image={resolvedHeroImage}

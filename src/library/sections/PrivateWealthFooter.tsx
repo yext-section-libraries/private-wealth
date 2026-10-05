@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import type { PuckComponent } from "@puckeditor/core";
@@ -7,8 +8,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
-  isDarkColor,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -18,7 +17,7 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
-  baseTypographyCss,
+  getContrastSurfaceStyle,
   createDefaultComprehensiveCTA,
   createDefaultStyledTextValue,
   getTextStyles,
@@ -122,11 +121,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
   );
   const resolvedBrandLabel =
     typeof resolvedBrandLabelValue === "string" ? resolvedBrandLabelValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    section.backgroundColor,
-    streamDocument,
-  );
-  const hasDarkBackground = isDarkColor(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -136,21 +131,20 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{baseTypographyCss}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <footer
-            className="px-6 py-6 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="flex flex-col items-center gap-4 text-center md:flex-row md:gap-8 md:text-left">
+            <div className="mx-auto flex max-w-pageSection-contentWidth flex-col items-center gap-4 text-center md:flex-row md:gap-8 md:text-left">
               <EntityField
-                displayName="Brand Label"
+                displayName={msg("fields.brandLabel", "Brand Label")}
                 fieldId={brandLabel.text.field}
                 constantValueEnabled={brandLabel.text.constantValueEnabled}
               >
                 <div
-                  className="font-serif text-2xl tracking-[-0.04em]"
+                  className="components font-body-fontFamily text-body-fontSize font-body-fontWeight"
                   style={getTextStyles(
                     brandLabel.styles,
                     brandLabel.fontColor,
@@ -161,11 +155,11 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
                   {resolvedBrandLabel}
                 </div>
               </EntityField>
-              <ul className="flex min-w-0 flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm md:flex-1 md:justify-start md:text-left">
+              <ul className="flex min-w-0 flex-wrap items-center justify-center gap-x-6 gap-y-2 md:flex-1 md:justify-start md:text-left">
                 {links.map((link, index) => (
                   <li key={index}>
                     <EntityField
-                      displayName={`Footer Link ${index + 1}`}
+                      displayName={`${msg("fields.link", "Link")} ${index + 1}`}
                       fieldId={link.cta.data.cta.field}
                       constantValueEnabled={
                         link.cta.data.cta.constantValueEnabled
@@ -174,11 +168,7 @@ const PrivateWealthFooterComponent: PuckComponent<PrivateWealthFooterProps> = ({
                       <ComprehensiveCTA
                         className={
                           link.cta.styles.variant === "link"
-                            ? `max-w-full w-fit whitespace-normal break-words border-b pb-1 no-underline transition hover:no-underline ${
-                                hasDarkBackground
-                                  ? "border-white/40 hover:border-white"
-                                  : "border-current/15 hover:border-current"
-                              }`
+                            ? "max-w-full w-fit whitespace-normal break-words"
                             : "max-w-full whitespace-normal break-words text-center"
                         }
                         eventName={`footerlink${index}`}

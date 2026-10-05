@@ -1,3 +1,4 @@
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { useState } from "react";
@@ -8,9 +9,6 @@ import {
   createItemSource,
   EntityField,
   getAnalyticsScopeHash,
-  getDefaultForegroundColor,
-  getThemeColorCssValue,
-  getSurfaceColorStyle,
   getDefaultRTF,
   resolveComponentData,
   useDocument,
@@ -23,8 +21,9 @@ import {
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider, useAnalytics } from "@yext/pages-components";
 import {
-  baseTypographyCss,
+  getContrastSurfaceStyle,
   createDefaultStyledTextValue,
+  getRichTextStyleOverrides,
   getTextStyles,
   renderResolvedRichText,
   type SectionProps,
@@ -256,7 +255,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
   );
   const resolvedHeading =
     typeof resolvedHeadingValue === "string" ? resolvedHeadingValue : "";
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -264,45 +263,49 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
   const questionStyle = getTextStyles(
     itemStyles.question.styles,
     itemStyles.question.fontColor,
+    section.backgroundColor,
+    streamDocument,
   );
-  const answerRichTextStyleOverrides = {
-    ...itemStyles.answer.styles,
-    color:
-      getThemeColorCssValue(
-        itemStyles.answer.fontColor ??
-          getDefaultForegroundColor(section.backgroundColor, streamDocument),
-      ) ?? "inherit",
-  };
+  const answerRichTextStyleOverrides = getRichTextStyleOverrides(
+    itemStyles.answer.styles,
+    itemStyles.answer.fontColor,
+    section.backgroundColor,
+    streamDocument,
+  );
 
   return (
     <VisibilityWrapper
       isEditing={puck.isEditing}
       liveVisibility={section.visibleOnLivePage}
     >
-      <style>{`${baseTypographyCss}
-.yext-private-wealth-faq-question { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
+      <style>{`.yext-private-wealth-faq-question { font-family: var(--fontFamily-body-fontFamily); font-size: var(--fontSize-body-fontSize); line-height: 1.5; font-weight: var(--fontWeight-body-fontWeight); font-style: var(--fontStyle-body-fontStyle); text-transform: var(--textTransform-body-textTransform); }
       `}</style>
       <AnalyticsScopeProvider name={scopeName}>
         <Background background={section.backgroundColor}>
           <section
-            className="px-6 py-16 md:px-8 lg:px-10"
+            className="px-4 py-pageSection-verticalPadding md:px-6"
             style={sectionSurfaceStyle}
           >
-            <div className="mx-auto max-w-[920px]">
+            <div className="mx-auto max-w-pageSection-contentWidth">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={heading.text.field}
                 constantValueEnabled={heading.text.constantValueEnabled}
               >
                 <h2
-                  className="text-center font-serif text-4xl tracking-[-0.04em] md:text-5xl"
-                  style={getTextStyles(heading.styles, heading.fontColor)}
+                  className="text-center"
+                  style={getTextStyles(
+                    heading.styles,
+                    heading.fontColor,
+                    section.backgroundColor,
+                    streamDocument,
+                  )}
                 >
                   {resolvedHeading}
                 </h2>
               </EntityField>
               <EntityField
-                displayName="FAQ Items"
+                displayName={msg("fields.faqItems", "FAQ Items")}
                 fieldId={items.field}
                 constantValueEnabled={items.constantValueEnabled}
               >
@@ -335,7 +338,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
                         open={isOpen}
                       >
                         <summary
-                          className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-sm font-semibold md:text-base"
+                          className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left"
                           onClick={(event) => {
                             event.preventDefault();
                             setOpenIndex(isOpen ? -1 : index);
@@ -356,7 +359,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
                           </span>
                         </summary>
                         {isOpen ? (
-                          <div className="pb-4 text-sm leading-7 opacity-70 md:text-base">
+                          <div className="pb-4">
                             {renderResolvedRichText(
                               resolvedAnswerValue,
                               answerRichTextStyleOverrides,
