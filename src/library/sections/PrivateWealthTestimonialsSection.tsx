@@ -456,7 +456,7 @@ const PrivateWealthTestimonialsSectionComponent: PuckComponent<
 
 export const PrivateWealthTestimonialsSection: YextComponentConfig<PrivateWealthTestimonialsSectionProps> =
   {
-    label: msg("components.testimonialsSection", "Testimonials Section"),
+    label: msg("components.testimonialsSection", "Testimonials"),
     fields: privateWealthTestimonialsFields,
     defaultProps: {
       cardStyles: {
@@ -499,7 +499,7 @@ export const PrivateWealthTestimonialsSection: YextComponentConfig<PrivateWealth
 
 export const config: SectionConfig = {
   id: "PrivateWealthTestimonialsSection",
-  displayName: "Testimonials Section",
-  description: "Testimonials Section",
+  displayName: "Testimonials",
+  description: "Testimonials",
   pageSetTypes: ["ENTITY"],
 };

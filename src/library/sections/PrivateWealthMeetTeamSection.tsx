@@ -672,7 +672,7 @@ const PrivateWealthMeetTeamSectionComponent: PuckComponent<
 
 export const PrivateWealthMeetTeamSection: YextComponentConfig<PrivateWealthMeetTeamSectionProps> =
   {
-    label: msg("components.meetTeamSection", "Meet Team Section"),
+    label: msg("components.meetTeamSection", "Meet Team"),
     fields: privateWealthMeetTeamFields,
     defaultProps: {
       heading: {
@@ -744,7 +744,7 @@ export const PrivateWealthMeetTeamSection: YextComponentConfig<PrivateWealthMeet
 
 export const config: SectionConfig = {
   id: "PrivateWealthMeetTeamSection",
-  displayName: "Meet Team Section",
-  description: "Meet Team Section",
+  displayName: "Meet Team",
+  description: "Meet Team",
   pageSetTypes: ["ENTITY"],
 };

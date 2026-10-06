@@ -484,7 +484,7 @@ const PrivateWealthHeroSectionComponent: PuckComponent<
 
 export const PrivateWealthHeroSection: YextComponentConfig<PrivateWealthHeroSectionProps> =
   {
-    label: msg("components.heroSection", "Hero Section"),
+    label: msg("components.heroSection", "Hero"),
     fields: privateWealthHeroFields,
     defaultProps: {
       heading: {
@@ -552,7 +552,7 @@ export const PrivateWealthHeroSection: YextComponentConfig<PrivateWealthHeroSect
 
 export const config: SectionConfig = {
   id: "PrivateWealthHeroSection",
-  displayName: "Hero Section",
-  description: "Hero Section",
+  displayName: "Hero",
+  description: "Hero",
   pageSetTypes: ["ENTITY"],
 };

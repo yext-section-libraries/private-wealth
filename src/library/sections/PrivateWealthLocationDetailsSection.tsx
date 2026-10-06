@@ -1136,7 +1136,7 @@ const PrivateWealthLocationDetailsSectionComponent: PuckComponent<
 
 export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWealthLocationDetailsSectionProps> =
   {
-    label: msg("components.locationDetailsSection", "Location Details Section"),
+    label: msg("components.locationDetailsSection", "Location Details"),
     fields: privateWealthLocationDetailsFields,
     defaultProps: {
       sectionHeading: {
@@ -1319,7 +1319,7 @@ export const PrivateWealthLocationDetailsSection: YextComponentConfig<PrivateWea
 
 export const config: SectionConfig = {
   id: "PrivateWealthLocationDetailsSection",
-  displayName: "Location Details Section",
-  description: "Location Details Section",
+  displayName: "Location Details",
+  description: "Location Details",
   pageSetTypes: ["ENTITY"],
 };

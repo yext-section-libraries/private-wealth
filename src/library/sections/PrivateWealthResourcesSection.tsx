@@ -290,7 +290,7 @@ const PrivateWealthResourcesSectionComponent: PuckComponent<
 
 export const PrivateWealthResourcesSection: YextComponentConfig<PrivateWealthResourcesSectionProps> =
   {
-    label: msg("components.resourcesSection", "Resources Section"),
+    label: msg("components.resourcesSection", "Resources"),
     fields: privateWealthResourcesFields,
     defaultProps: {
       heading: {
@@ -345,7 +345,7 @@ export const PrivateWealthResourcesSection: YextComponentConfig<PrivateWealthRes
 
 export const config: SectionConfig = {
   id: "PrivateWealthResourcesSection",
-  displayName: "Resources Section",
-  description: "Resources Section",
+  displayName: "Resources",
+  description: "Resources",
   pageSetTypes: ["ENTITY"],
 };

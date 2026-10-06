@@ -178,7 +178,7 @@ const PrivateWealthBannerComponent: PuckComponent<PrivateWealthBannerProps> = ({
  */
 export const PrivateWealthBanner: YextComponentConfig<PrivateWealthBannerProps> =
   {
-    label: msg("components.banner", "Banner Section"),
+    label: msg("components.banner", "Banner"),
     fields: PrivateWealthBannerFields,
     defaultProps: {
       data: {
@@ -217,7 +217,7 @@ export const PrivateWealthBanner: YextComponentConfig<PrivateWealthBannerProps> 
 
 export const config: SectionConfig = {
   id: "PrivateWealthBanner",
-  displayName: "Banner Section",
+  displayName: "Banner",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

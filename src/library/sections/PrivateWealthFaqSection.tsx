@@ -381,7 +381,7 @@ const PrivateWealthFaqSectionComponent: PuckComponent<
 
 export const PrivateWealthFaqSection: YextComponentConfig<PrivateWealthFaqSectionProps> =
   {
-    label: msg("components.faqSection", "FAQ Section"),
+    label: msg("components.faqSection", "FAQ"),
     fields: privateWealthFaqFields,
     defaultProps: {
       heading: {
@@ -416,7 +416,7 @@ export const PrivateWealthFaqSection: YextComponentConfig<PrivateWealthFaqSectio
 
 export const config: SectionConfig = {
   id: "PrivateWealthFaqSection",
-  displayName: "FAQ Section",
-  description: "FAQ Section",
+  displayName: "FAQ",
+  description: "FAQ",
   pageSetTypes: ["ENTITY"],
 };

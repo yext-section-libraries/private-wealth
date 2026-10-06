@@ -502,7 +502,7 @@ export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWe
   {
     label: msg(
       "components.featuredServicesSection",
-      "Featured Services Section",
+      "Featured Services",
     ),
     fields: privateWealthFeaturedServicesFields,
     defaultProps: {
@@ -551,7 +551,7 @@ export const PrivateWealthFeaturedServicesSection: YextComponentConfig<PrivateWe
 
 export const config: SectionConfig = {
   id: "PrivateWealthFeaturedServicesSection",
-  displayName: "Featured Services Section",
-  description: "Featured Services Section",
+  displayName: "Featured Services",
+  description: "Featured Services",
   pageSetTypes: ["ENTITY"],
 };

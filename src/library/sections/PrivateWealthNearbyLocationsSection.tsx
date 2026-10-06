@@ -551,7 +551,7 @@ const PrivateWealthNearbyLocationsSectionComponent: PuckComponent<
 
 export const PrivateWealthNearbyLocationsSection: YextComponentConfig<PrivateWealthNearbyLocationsSectionProps> =
   {
-    label: msg("components.nearbyLocationsSection", "Nearby Locations Section"),
+    label: msg("components.nearbyLocationsSection", "Nearby Locations"),
     fields: privateWealthNearbyLocationsFields,
     defaultProps: {
       cardStyles: {
@@ -614,7 +614,7 @@ export const PrivateWealthNearbyLocationsSection: YextComponentConfig<PrivateWea
 
 export const config: SectionConfig = {
   id: "PrivateWealthNearbyLocationsSection",
-  displayName: "Nearby Locations Section",
-  description: "Nearby Locations Section",
+  displayName: "Nearby Locations",
+  description: "Nearby Locations",
   pageSetTypes: ["ENTITY"],
 };

@@ -288,7 +288,7 @@ const PrivateWealthAboutBranchSectionComponent: PuckComponent<
 
 export const PrivateWealthAboutBranchSection: YextComponentConfig<PrivateWealthAboutBranchSectionProps> =
   {
-    label: msg("components.aboutBranchSection", "About Branch Section"),
+    label: msg("components.aboutBranchSection", "About Branch"),
     fields: privateWealthAboutBranchFields,
     defaultProps: {
       heading: {
@@ -345,7 +345,7 @@ export const PrivateWealthAboutBranchSection: YextComponentConfig<PrivateWealthA
 
 export const config: SectionConfig = {
   id: "PrivateWealthAboutBranchSection",
-  displayName: "About Branch Section",
-  description: "About Branch Section",
+  displayName: "About Branch",
+  description: "About Branch",
   pageSetTypes: ["ENTITY"],
 };

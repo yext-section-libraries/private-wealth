@@ -312,7 +312,7 @@ const PrivateWealthBeforeMeetingSectionComponent: PuckComponent<
 
 export const PrivateWealthBeforeMeetingSection: YextComponentConfig<PrivateWealthBeforeMeetingSectionProps> =
   {
-    label: msg("components.beforeMeetingSection", "Before Meeting Section"),
+    label: msg("components.beforeMeetingSection", "Before Meeting"),
     fields: privateWealthBeforeMeetingFields,
     defaultProps: {
       heading: {
@@ -390,7 +390,7 @@ export const PrivateWealthBeforeMeetingSection: YextComponentConfig<PrivateWealt
 
 export const config: SectionConfig = {
   id: "PrivateWealthBeforeMeetingSection",
-  displayName: "Before Meeting Section",
-  description: "Before Meeting Section",
+  displayName: "Before Meeting",
+  description: "Before Meeting",
   pageSetTypes: ["ENTITY"],
 };
