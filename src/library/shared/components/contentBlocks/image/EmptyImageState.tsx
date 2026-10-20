@@ -4,7 +4,7 @@ import { pt } from "@yext/visual-editor/section-library-support";
 import { themeManagerCn } from "@yext/visual-editor/section-library-support";
 import { AssetImageType } from "@yext/visual-editor/section-library-support";
 import { ImagePlus } from "lucide-react";
-import { Button } from "@yext/visual-editor/section-library-support";
+import { EditorButton as Button } from "@yext/visual-editor/section-library-support";
 import {
   TARGET_ORIGINS,
   useSendMessageToParent,
