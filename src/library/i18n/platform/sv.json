@@ -133,6 +133,7 @@
     "logoImage": "Logotypbild",
     "longitude": "Longitud",
     "map": "Karta",
+    "mapStartingZoom": "Kartans startzoom",
     "mapboxMapStyle": "Mapbox-kartstil",
     "mapStyle": "Kartstil",
     "name": "Namn",
