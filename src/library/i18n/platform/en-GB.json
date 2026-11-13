@@ -55,6 +55,7 @@
     "analytics": "Analytics",
     "answer": "Answer",
     "aspectRatio": "Aspect Ratio",
+    "autoSearchOnMapMove": "Automatically Search on Map Movement",
     "backgroundColor": "Background Color",
     "bannerText": "Banner Text",
     "body": "Body",
