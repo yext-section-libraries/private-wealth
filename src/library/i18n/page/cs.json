@@ -48,6 +48,7 @@
   "locationsWithinDistanceOf_other": "{{count}} míst ve vzdálenosti {{distance}} {{unit}} od „{{name}}“",
   "logo": "Logo",
   "mapRequiresOptIn": "Tuto mapu lze zobrazit pouze v případě, že jsou povoleny soubory cookie",
+  "mapRequiresWebGL": "Mapa není dostupná, protože WebGL není k dispozici.",
   "mappedBannerFieldEmpty": "Mapované pole banneru je prázdné",
   "mile_few": "míle",
   "mile_many": "mil",
