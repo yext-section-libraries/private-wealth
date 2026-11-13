@@ -55,6 +55,7 @@
     "analytics": "Analytics",
     "answer": "Antwort",
     "aspectRatio": "Seitenverhältnis",
+    "autoSearchOnMapMove": "Automatische Suche nach Kartenbewegung",
     "backgroundColor": "Hintergrundfarbe",
     "bannerText": "Bannertext",
     "body": "Inhalt",
