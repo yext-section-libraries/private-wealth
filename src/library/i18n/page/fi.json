@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "{{count}} sijaintia {{distance}} {{unit}} säteellä kohteesta \"{{name}}\"",
   "logo": "Logo",
   "mapRequiresOptIn": "Tämä kartta voidaan näyttää vain, jos evästeet ovat käytössä",
+  "mapRequiresWebGL": "Kartta ei ole käytettävissä, koska WebGL ei ole käytettävissä.",
   "mappedBannerFieldEmpty": "Yhdistetty bannerikenttä on tyhjä",
   "mile_one": "maili",
   "mile_other": "mailia",

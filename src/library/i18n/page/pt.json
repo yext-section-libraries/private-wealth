@@ -43,6 +43,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locais dentro de {{distance}} {{unit}} de \"{{name}}\"",
   "logo": "Logotipo",
   "mapRequiresOptIn": "Este mapa só pode ser exibido se os cookies estiverem ativados",
+  "mapRequiresWebGL": "O mapa não está disponível porque o WebGL não está disponível.",
   "mappedBannerFieldEmpty": "O campo de banner associado está vazio",
   "mile_many": "milhas",
   "mile_one": "milha",

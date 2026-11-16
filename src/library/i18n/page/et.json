@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "{{count}} asukohta asukohast \"{{name}}\" {{distance}} {{unit}} raadiuses",
   "logo": "Logo",
   "mapRequiresOptIn": "Seda kaarti saab kuvada ainult siis, kui küpsised on lubatud",
+  "mapRequiresWebGL": "Kaart pole saadaval, sest WebGL pole saadaval.",
   "mappedBannerFieldEmpty": "Seotud bänneriväli on tühi",
   "mile_one": "miil",
   "mile_other": "miili",

@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "{{count}} steder innenfor {{distance}} {{unit}} fra \"{{name}}\"",
   "logo": "Logo",
   "mapRequiresOptIn": "Dette kartet kan bare vises hvis informasjonskapsler er aktivert",
+  "mapRequiresWebGL": "Kartet er ikke tilgjengelig fordi WebGL ikke er tilgjengelig.",
   "mappedBannerFieldEmpty": "Det tilordnede bannerfeltet er tomt",
   "mile_one": "mil",
   "mile_other": "mil",

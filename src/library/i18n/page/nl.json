@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locaties binnen {{distance}} {{unit}} van \"{{name}}\"",
   "logo": "Logo",
   "mapRequiresOptIn": "Deze kaart kan alleen worden weergegeven als cookies zijn ingeschakeld",
+  "mapRequiresWebGL": "De kaart is niet beschikbaar omdat WebGL niet beschikbaar is.",
   "mappedBannerFieldEmpty": "Het gekoppelde bannerveld is leeg",
   "mile_one": "mijl",
   "mile_other": "mijlen",

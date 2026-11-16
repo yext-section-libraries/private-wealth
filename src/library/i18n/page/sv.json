@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "{{count}} platser inom {{distance}} {{unit}} från \"{{name}}\"",
   "logo": "Logotyp",
   "mapRequiresOptIn": "Denna karta kan endast visas om cookies är aktiverade",
+  "mapRequiresWebGL": "Kartan är inte tillgänglig eftersom WebGL inte är tillgängligt.",
   "mappedBannerFieldEmpty": "Det mappade bannerfältet är tomt",
   "mile_one": "mil",
   "mile_other": "mil",

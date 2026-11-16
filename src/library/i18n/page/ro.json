@@ -43,6 +43,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locații pe o rază de {{distance}} {{unit}} de „{{name}}”",
   "logo": "Logo",
   "mapRequiresOptIn": "Această hartă poate fi afișată numai dacă cookie-urile sunt activate",
+  "mapRequiresWebGL": "Harta nu este disponibilă deoarece WebGL nu este disponibil.",
   "mappedBannerFieldEmpty": "Câmpul de banner asociat este gol",
   "mile_few": "mile",
   "mile_one": "milă",
